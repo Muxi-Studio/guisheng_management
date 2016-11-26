@@ -1,0 +1,29 @@
+{
+	"routes": [
+		{
+			"name" : "home",
+			"endpoint": "/",
+			"template": "home",
+			"async": false
+		},
+		{
+			"name": "second",
+			"endpoint": "/second",
+			"async": true
+		},
+		{
+			"name": "api.courses",
+			"endpoint": "/api",
+			"async": true
+		}
+	],
+	"data":{
+		"second":{
+			"tag" : "txt",
+			"content": ["1","2","3"]
+		},
+		"api.courses":{
+			"title": "second"
+		}
+	}
+}
