@@ -7,11 +7,6 @@
 			"async": false
 		},
 		{
-			"name": "second",
-			"endpoint": "/second",
-			"async": true
-		},
-		{
 			"name": "api.courses",
 			"endpoint": "/api",
 			"async": true

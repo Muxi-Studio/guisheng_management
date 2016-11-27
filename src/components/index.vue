@@ -1,3 +1,5 @@
 <template>
-	<div>hahhha</div>
+<div class="wrap">
+	<router-view></router-view>
+</div>
 </template>
