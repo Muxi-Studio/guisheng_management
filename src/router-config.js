@@ -3,6 +3,7 @@ import Home from './components/index'
 import Create from './components/create'
 import List from './components/list'
 
+//all
 const Pics = Vue.extend({
     name:"Pics",
     mixins: [Home]
@@ -20,7 +21,7 @@ const Interaction = Vue.extend({
     mixins: [Home]
 })
 
-
+//posted
 const Pics_posted = Vue.extend({
 	  name:"Pics",
   	mixins: [List]
@@ -38,7 +39,7 @@ const Interaction_posted = Vue.extend({
   	mixins: [List]
 })
 
-
+//create
 const PicsCre = Vue.extend({
 	  name:"Pics_Cre",
   	mixins: [Create]
