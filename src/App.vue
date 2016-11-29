@@ -24,18 +24,25 @@
 					      			<el-menu-item index="/pics/unposted">未发布</el-menu-item>
 					    		</el-menu-item-group>
 					  		</el-submenu>
-					  		<el-submenu index="/article">
+					  		<el-submenu index="/articles">
 					    		<template slot="title">水墨</template>
-								<el-menu-item index="/article/create">新建</el-menu-item>
+					    		<el-menu-item-group title="新建">
+					    			<el-menu-item index="/articles/pics">图片</el-menu-item>
+					    			<el-menu-item index="/articles/movies">电影</el-menu-item>
+					      			<el-menu-item index="/articles/music">音乐</el-menu-item>
+					    		</el-menu-item-group>
 					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/article/list">所有</el-menu-item>
-					    			<el-menu-item index="/article/posted">已发布</el-menu-item>
-					      			<el-menu-item index="/article/unposted">未发布</el-menu-item>
+					    			<el-menu-item index="/articles/list">所有</el-menu-item>
+					    			<el-menu-item index="/articles/posted">已发布</el-menu-item>
+					      			<el-menu-item index="/articles/unposted">未发布</el-menu-item>
 					    		</el-menu-item-group>
 					  		</el-submenu>
 					  		<el-submenu index="/interaction">
 					    		<template slot="title">互动</template>
-								<el-menu-item index="/interaction/create">新建</el-menu-item>
+					    		<el-menu-item-group title="新建">
+					    			<el-menu-item index="/interaction/tea">喝茶吧</el-menu-item>
+					    			<el-menu-item index="/interaction/topic">话题</el-menu-item>
+					    		</el-menu-item-group>
 					    		<el-menu-item-group title="列表">
 					    			<el-menu-item index="/interaction/list">所有</el-menu-item>
 					    			<el-menu-item index="/interaction/posted">已发布</el-menu-item>
