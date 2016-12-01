@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<div v-if="category === '/news'">news</div>
+		<div>{{this.config.name}}</div>
 		<el-form :model="create" :rules="rules" ref="create" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="create.title"></el-input>
@@ -8,17 +8,23 @@
 			<el-form-item label="作者" prop="author">
 				<el-input v-model="create.author"></el-input>
 			</el-form-item>
-			<el-form-item label="活动形式" prop="textarea">
+			<el-form-item label="作品描述" prop="textarea" v-if="config.textarea">
 				<el-input type="textarea" v-model="create.textarea"></el-input>
 			</el-form-item>
-			<el-form-item label="添加标签" prop="moretag">
+			<el-form-item label="ID编辑框" prop="url" v-if="config.url">
+				<el-input v-model="create.url"></el-input>
+			</el-form-item>
+			<el-form-item label="编辑文章" prop="edit" v-if="config.edit">
+				<el-input v-model="create.edit"><el-button slot="append" type="primary" icon="edit"></el-button></el-input>
+			</el-form-item>
+			<el-form-item label="添加标签" prop="moretag" v-if="config.tag">
 				<el-input v-model="create.moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
 			<el-tag
 			  v-for="tag in create.tags"
 			  :closable="true"
-			  :type="tag.type"
 			  :close-transition="false"
 			  @close="handleClose(tag)"
+			  v-if="config.tag"
 			>
 			{{tag.name}}
 			</el-tag>
@@ -44,19 +50,29 @@
 	export default{
 		data (){
 			return {
-				category:"",
+				id:'',
+				name:['/news/create','/pics/create','/articles/pics','/articles/movies','/articles/music','/interaction/tea','/interaction/topic'],
+				url:'',
+				config:{
+					name:'',
+					tag:true,
+			        url:false,
+			        edit:true,
+			        textarea:false
+				},
 				create: {
 					title: '',
 					author: '',
 					textarea:'',
 					moretag:'',
+					url:'',
 			        tags: [
-						{name: '标签一', type: '' },
-						{name: '标签二', type: 'gray' },
-						{name: '标签三', type: 'primary' },
-						{name: '标签四', type: 'success' },
-						{name: '标签五', type: 'warning' },
-						{name: '标签六', type: 'danger' }
+						{name: '标签一'},
+						{name: '标签二'},
+						{name: '标签三'},
+						{name: '标签四'},
+						{name: '标签五'},
+						{name: '标签六'}
 			        ]
         		},
         		rules:{
@@ -65,20 +81,27 @@
         			],
         			author:[
         				{ required: true, message: '请输入作者名称', trigger: 'blur' }
-        			],
-        			textarea:[
-        				{ required: true, message: '请输入作品描述', trigger: 'blur' }
         			]
         		},
 			}
 		},
+		props: {
+	    	category: {
+	          	type: Array
+	      	},
+	      	// name:{
+	      	// 	type:Array
+	      	// }
+  		},
 		created(){
 			this.geturl()
 		},
   		methods:{
   			geturl(){
-  				this.category = this.$route.matched[0].path
-  				console.log(this.category)
+  				this.url = this.$route.path
+  				this.id = this.name.indexOf(this.url)
+  				this.config = this.category[this.id]
+  				console.log(this.config)
   			},
 			handleClose(tag) {
 				this.create.tags.splice(this.create.tags.indexOf(tag), 1);
@@ -104,7 +127,7 @@
 		    },
 			addTag(){
 				console.log(this.create.moretag)
-				this.create.tags.push({name:this.create.moretag,type:''})
+				this.create.tags.push({name:this.create.moretag})
 			}
   		}
 	}

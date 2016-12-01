@@ -79,7 +79,7 @@
 		},
   		methods:{
 			geturl(){
-				this.category = this.$route.matched[0].path
+				this.category = this.$route
   				console.log(this.category)
 			},
 			formatter(row, column) {
