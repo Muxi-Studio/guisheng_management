@@ -6,40 +6,49 @@
     border
     style="width: 100%">
     <el-table-column
-      prop="date"
-      label="日期"
+      prop="title"
+      label="标题"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="姓名"
+      prop="author"
+      label="作者"
       width="180">
     </el-table-column>
     <el-table-column
-      prop="address"
-      label="地址"
+      prop="description"
+      label="描述"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="description"
+      label="描述"
       :formatter="formatter">
     </el-table-column>
     <el-table-column
-      prop="tag"
-      label="标签"
-      width="100"
-      :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
-      :filter-method="filterTag"
-      inline-template>
-      <el-tag :type="row.tag === '家' ? 'primary' : 'success'" close-transition>{{row.tag}}</el-tag>
-    </el-table-column>
-    <el-table-column
-      inline-template
       :context="_self"
-      label="操作"
-      width="100">
-      <span>
-        <el-button @click="handleClick" type="text" size="small">查看</el-button>
-        <el-button type="text" size="small">编辑</el-button>
-      </span>
+      inline-template
+      label="操作">
+      <div>
+        <el-button
+          size="small"
+          @click="handleEdit($index, row)">
+          编辑信息
+        </el-button>
+        <el-button
+          size="small"
+          @click="handleEdit($index, row)">
+          编辑正文
+        </el-button>
+        <el-button
+          size="small"
+          type="danger"
+          @click="handleDelete($index, row)">
+          删除
+        </el-button>
+      </div>
     </el-table-column>
-  </el-table>
+
 	</div>
 </template>
 <script>
@@ -47,50 +56,48 @@
 		data(){
 			return {
 				category:"",
-				tableData: [{
-              title:'haha',
-              count:'4',
-              tag:['好玩','有意思'],
-              saver:'amanda',
-              update:'2016-07-11'
-				    }, {
-              title:'haha',
-              count:'4',
-              tag:['好玩','有意思'],
-              saver:'amanda',
-              update:'2016-07-11'
-				    }, {
-              title:'haha',
-              count:'4',
-              tag:['好玩','有意思'],
-              saver:'amanda',
-              update:'2016-07-11'
-				    }, {
-              title:'haha',
-              count:'4',
-              tag:['好玩','有意思'],
-              saver:'amanda',
-              update:'2016-07-11'
-				}]
+        tableData: [{
+            title: 'HAHA',
+            author: 'AMANDA',
+            description:'lajgle',
+            id:'012345',
+            tags: [
+              {name: '标签一'},
+              {name: '标签二'},
+              {name: '标签三'},
+              {name: '标签四'},
+              {name: '标签五'},
+              {name: '标签六'}
+            ]
+          }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }]
 			}
 		},
 		created(){
 			this.geturl()
 		},
   		methods:{
-			geturl(){
-				this.category = this.$route
-  				console.log(this.category)
-			},
-			formatter(row, column) {
-       		 	return row.address;
-      		},
-      		filterTag(value, row) {
-        		return row.tag === value;
-      		},
-      		handleClick() {
-        		console.log(1);
-        	}
+    			geturl(){
+    				this.category = this.$route
+      				console.log(this.category)
+    			},
+      handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
+      }
   		}
 	}
 </script>

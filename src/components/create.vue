@@ -8,14 +8,11 @@
 			<el-form-item label="作者" prop="author">
 				<el-input v-model="create.author"></el-input>
 			</el-form-item>
-			<el-form-item label="作品描述" prop="textarea" v-if="config.textarea">
-				<el-input type="textarea" v-model="create.textarea"></el-input>
+			<el-form-item label="作品描述" prop="description" v-if="config.description">
+				<el-input type="textarea" v-model="create.description"></el-input>
 			</el-form-item>
 			<el-form-item label="ID编辑框" prop="url" v-if="config.url">
 				<el-input v-model="create.url"></el-input>
-			</el-form-item>
-			<el-form-item label="编辑文章" prop="edit" v-if="config.edit">
-				<el-input v-model="create.edit"><el-button slot="append" type="primary" icon="edit"></el-button></el-input>
 			</el-form-item>
 			<el-form-item label="添加标签" prop="moretag" v-if="config.tag">
 				<el-input v-model="create.moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
@@ -50,20 +47,18 @@
 	export default{
 		data (){
 			return {
-				id:'',
-				name:['/news/create','/pics/create','/articles/pics','/articles/movies','/articles/music','/interaction/tea','/interaction/topic'],
+				index:'',
 				url:'',
 				config:{
 					name:'',
 					tag:true,
 			        url:false,
-			        edit:true,
 			        textarea:false
 				},
 				create: {
 					title: '',
 					author: '',
-					textarea:'',
+					description:'',
 					moretag:'',
 					url:'',
 			        tags: [
@@ -89,9 +84,9 @@
 	    	category: {
 	          	type: Array
 	      	},
-	      	// name:{
-	      	// 	type:Array
-	      	// }
+	      	nameArr:{
+	      		type: Array
+	      	}
   		},
 		created(){
 			this.geturl()
@@ -99,9 +94,8 @@
   		methods:{
   			geturl(){
   				this.url = this.$route.path
-  				this.id = this.name.indexOf(this.url)
-  				this.config = this.category[this.id]
-  				console.log(this.config)
+  				this.index = this.nameArr.indexOf(this.url)
+  				this.config = this.category[this.index]
   			},
 			handleClose(tag) {
 				this.create.tags.splice(this.create.tags.indexOf(tag), 1);

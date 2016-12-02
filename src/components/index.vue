@@ -1,6 +1,6 @@
 <template>
 <div class="wrap">
-	<router-view :category="category"></router-view>
+	<router-view :category="category" :nameArr="name"></router-view>
 </div>
 </template>
 <script>
@@ -9,7 +9,7 @@ export default {
   data(){
     return {
       category:category.category,
-      // name:category.name
+      name:category.name
     }
   }
 }
