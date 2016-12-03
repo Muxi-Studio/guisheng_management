@@ -52,7 +52,7 @@
 						</el-menu>
 					</div>
 				</el-col>
-  				<el-col :span="16">
+  				<el-col :span="17">
   					<div class="main">
 						<router-view></router-view>
 					</div>

@@ -94,6 +94,9 @@
     			},
       handleEdit(index, row) {
         console.log(index, row);
+        console.log(this.$route)
+        this.$router.push({name:this.$route.matched[0].path,params: { aid:1 }})
+
       },
       handleDelete(index, row) {
         console.log(index, row);

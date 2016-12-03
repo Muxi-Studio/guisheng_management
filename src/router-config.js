@@ -20,7 +20,10 @@ const Interaction = Vue.extend({
     name:"Interaction",
     mixins: [Home]
 })
-
+const Edit = Vue.extend({
+    name:"Edit",
+    mixins: [Home]
+})
 
 //list
 const Pics_List = Vue.extend({
@@ -59,6 +62,24 @@ const Interaction_posted = Vue.extend({
   	mixins: [List]
 })
 
+//unposted
+const Pics_unposted = Vue.extend({
+    name:"Pics_unposted",
+    mixins: [List]
+})
+const News_unposted = Vue.extend({
+    name:"News_unposted",
+    mixins: [List]
+})
+const Article_unposted = Vue.extend({
+    name:"Article_unposted",
+    mixins: [List]
+})
+const Interaction_unposted = Vue.extend({
+    name:"Interaction_unposted",
+    mixins: [List]
+})
+
 //create
 const PicsCre = Vue.extend({
 	  name:"Pics_Cre",
@@ -89,7 +110,11 @@ const InteractionCre_Topic = Vue.extend({
     mixins: [Create]
 })
 
-
+//modify
+const Modify = Vue.extend({
+    name:"Modify",
+    mixins: [Create]
+})
 
 export default {
     routes: [
@@ -107,10 +132,20 @@ export default {
               {
                 path: 'posted',
                 component: Pics_posted
+              },
+              {
+                path: 'unposted',
+                component: Pics_unposted
+              },
+              {
+                path:'edit/:aid',
+                name:'/pics',
+                component:Modify
               }
             ]
         },
-        { path: '/news',component:News,
+        { path: '/news',
+            component:News,
             children: [
   		        {
   		          path: 'create',
@@ -123,7 +158,16 @@ export default {
   		        {
   		          path: 'posted',
   		          component: News_posted
-          		}
+          		},
+              {
+                path: 'unposted',
+                component: News_unposted
+              },
+              {
+                path:'edit/:aid',
+                name:'/news',
+                component:Modify
+              }
           	]
         },
         { path: '/articles',component:Article,
@@ -147,7 +191,16 @@ export default {
             {
               path: 'posted',
               component: Article_posted
-            }
+            },
+            {
+              path: 'unposted',
+              component: Article_unposted
+            },
+              {
+                path:'edit/:aid',
+                name:'/articles',
+                component:Modify
+              }
           ]
         },
         { path: '/interaction',component:Interaction,
@@ -167,6 +220,15 @@ export default {
               {
                 path: 'posted',
                 component: Interaction_posted
+              },
+              {
+                path: 'unposted',
+                component: Interaction_unposted
+              },
+              {
+                path:'edit/:aid',
+                name:'/interaction',
+                component:Modify
               }
             ]
         }

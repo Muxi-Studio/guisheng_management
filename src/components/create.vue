@@ -1,6 +1,5 @@
 <template>
 	<div class="wrap">
-		<div>{{this.config.name}}</div>
 		<el-form :model="create" :rules="rules" ref="create" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="create.title"></el-input>
@@ -95,7 +94,10 @@
   			geturl(){
   				this.url = this.$route.path
   				this.index = this.nameArr.indexOf(this.url)
-  				this.config = this.category[this.index]
+  				if(this.index != -1){
+  					this.config = this.category[this.index]
+  				}
+  				console.log(this)
   			},
 			handleClose(tag) {
 				this.create.tags.splice(this.create.tags.indexOf(tag), 1);
