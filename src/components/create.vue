@@ -22,7 +22,7 @@
 			  @close="handleClose(tag)"
 			  v-if="config.tag"
 			>
-			{{tag.name}}
+			{{tag}}
 			</el-tag>
 			<el-upload
 			  action="//jsonplaceholder.typicode.com/posts/"
@@ -35,7 +35,7 @@
 			  <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
 			  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
 			</el-upload>
-			<el-form-item>
+			<el-form-item v-if="modify">
 				<el-button type="primary" @click="handleSubmit">立即创建</el-button>
 				<el-button @click="handleReset">重置</el-button>
 			</el-form-item>
@@ -43,9 +43,11 @@
 	</div>
 </template>
 <script>
+import 'whatwg-fetch'
 	export default{
 		data (){
 			return {
+				modify:false,
 				index:'',
 				url:'',
 				config:{
@@ -60,14 +62,7 @@
 					description:'',
 					moretag:'',
 					url:'',
-			        tags: [
-						{name: '标签一'},
-						{name: '标签二'},
-						{name: '标签三'},
-						{name: '标签四'},
-						{name: '标签五'},
-						{name: '标签六'}
-			        ]
+			        tags:['标签一','标签二','标签三','标签四','标签五','标签六']
         		},
         		rules:{
         			title:[
@@ -93,11 +88,12 @@
   		methods:{
   			geturl(){
   				this.url = this.$route.path
+  				console.log(this.$route)
+  				this.modify = this.$route.matched[1].path === 'edit' ? true:false
   				this.index = this.nameArr.indexOf(this.url)
   				if(this.index != -1){
   					this.config = this.category[this.index]
   				}
-  				console.log(this)
   			},
 			handleClose(tag) {
 				this.create.tags.splice(this.create.tags.indexOf(tag), 1);

@@ -5,6 +5,21 @@
     :data="tableData"
     border
     style="width: 100%">
+    <el-table-column 
+      prop="state" 
+      label="状态" 
+      width="100" 
+      :filters="[{ text: '已发布', value: 1 }, { text: '未发布', value: 0 }]" 
+      :filter-method="filterTag" inline-template>
+      <el-tag :type="row.state === 0 ? 'primary' : 'success'" close-transition>
+        {{row.state === 1 ? '已发布':'未发布'}}
+      </el-tag>
+    </el-table-column>
+    <el-table-column
+      prop="id"
+      label="id"
+      width="100">
+    </el-table-column>
     <el-table-column
       prop="title"
       label="标题"
@@ -21,11 +36,15 @@
       width="180">
     </el-table-column>
     <el-table-column
-      prop="description"
-      label="描述"
-      :formatter="formatter">
+      prop="tags"
+      label="标签"
+      width="200"
+      inline-template>
+      <el-tag v-for="tag in row.tags">{{ tag }}</el-tag>
     </el-table-column>
     <el-table-column
+      fixed="right"
+      width="250"
       :context="_self"
       inline-template
       label="操作">
@@ -55,51 +74,31 @@
 	export default{
 		data(){
 			return {
-				category:"",
-        tableData: [{
-            title: 'HAHA',
-            author: 'AMANDA',
-            description:'lajgle',
-            id:'012345',
-            tags: [
-              {name: '标签一'},
-              {name: '标签二'},
-              {name: '标签三'},
-              {name: '标签四'},
-              {name: '标签五'},
-              {name: '标签六'}
-            ]
-          }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄'
-        }]
+        tableData:[]
 			}
 		},
 		created(){
-			this.geturl()
+      fetch("/api"+"/news")
+      .then( (res) => {
+        return res.json()
+      }).then( value => {
+        this.tableData = value.tableData
+      })
 		},
   		methods:{
-    			geturl(){
-    				this.category = this.$route
-      				console.log(this.category)
-    			},
       handleEdit(index, row) {
         console.log(index, row);
-        console.log(this.$route)
-        this.$router.push({name:this.$route.matched[0].path,params: { aid:1 }})
+        this.$router.push({name:this.$route.matched[0].path,params: { aid:row.id }})
 
       },
       handleDelete(index, row) {
         console.log(index, row);
+      },
+      formatter(row, column) {
+        return row.address;
+      },
+      filterTag(value, row) {
+        return row.state === value;
       }
   		}
 	}

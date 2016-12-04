@@ -130,14 +130,6 @@ export default {
                 component: Pics_List
               },
               {
-                path: 'posted',
-                component: Pics_posted
-              },
-              {
-                path: 'unposted',
-                component: Pics_unposted
-              },
-              {
                 path:'edit/:aid',
                 name:'/pics',
                 component:Modify
@@ -154,14 +146,6 @@ export default {
               {
                 path: 'list',
                 component: News_List
-              },
-  		        {
-  		          path: 'posted',
-  		          component: News_posted
-          		},
-              {
-                path: 'unposted',
-                component: News_unposted
               },
               {
                 path:'edit/:aid',
@@ -188,14 +172,6 @@ export default {
               path: 'list',
               component: Article_List
             },
-            {
-              path: 'posted',
-              component: Article_posted
-            },
-            {
-              path: 'unposted',
-              component: Article_unposted
-            },
               {
                 path:'edit/:aid',
                 name:'/articles',
@@ -216,14 +192,6 @@ export default {
               {
                 path: 'list',
                 component: Interaction_List
-              },
-              {
-                path: 'posted',
-                component: Interaction_posted
-              },
-              {
-                path: 'unposted',
-                component: Interaction_unposted
               },
               {
                 path:'edit/:aid',
