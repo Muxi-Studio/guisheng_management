@@ -1,11 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
     entry: {
-        'main.js': ['./src/main.js', 'webpack-hot-middleware/client']
+        'main.js': ['./src/main.js', 'webpack-hot-middleware/client'],
+        'editor.js': ['./src/editor.js', 'webpack-hot-middleware/client']
     },
     output: {
         path: '/',
@@ -62,5 +64,15 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
+        new HtmlWebpackPlugin({
+            filename: 'templates/home.html',
+            template: './templates/home.ejs',
+            inject: false
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'templates/editor.html',
+            template: './templates/editor.ejs',
+            inject: false
+        })
     ]
 };

@@ -21,6 +21,12 @@
 			"name":"news",
 			"endpoint":"/api/news",
 			"async":true
+		},
+		{
+			"name": "editor",
+			"endpoint": "/editor/:id",
+			"template": "editor",
+			"async": false
 		}
 	],
 	"data":{

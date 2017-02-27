@@ -1,0 +1,59 @@
+body{
+	background-color: rgba(0,0,0,.04);
+} 
+.container {
+	margin: 20px auto;
+	.back {
+		position: absolute;
+		bottom: 15px;
+		right: 400px;
+		padding: 10px 45px;
+		font-size: normal;
+		background-color: hsl(206, 100%, 56%);
+		a {
+			color: #fff;
+			cursor: pointer;
+			display: block;
+		}
+
+	}
+	form {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		.wrapper {
+			width: 60%;
+			min-height: 600px;
+			height: 600px;
+			display: block;
+		}
+		.editor {
+			border: 1px solid #F1F1F1;
+			padding: 5px 15px;
+			height: 80%;
+			border-radius: 2px;
+			background-color: #fff;
+		}
+		.toolbar {
+			width: 100%;
+			padding: 15px;
+		}
+		.text {
+			display: none;
+		}
+		input[type="submit"] {
+			right: 230px;
+			position: absolute;
+			bottom: 15px;
+			display: block;
+			padding: 10px 45px;
+			background-color: hsl(206, 100%, 56%);
+			border: 0;
+			outline: 0;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+		}
+	}
+}
