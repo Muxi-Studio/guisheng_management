@@ -7,24 +7,14 @@
 			"async": false
 		},
 		{
-			"name": "api.courses",
-			"endpoint": "/api",
+			"name":"createNews",
+			"method": "post",
+			"endpoint":"/api/v1.0/news",
 			"async": true
 		},
 		{
-			"name":"Add",
-			"method":"post",
-			"endpoint":"/api/add",
-			"async":true
-		},
-		{
-			"name":"news",
-			"endpoint":"/api/news",
-			"async":true
-		},
-		{
 			"name": "editor",
-			"endpoint": "/editor/:id",
+			"endpoint": "/editor/:kind/:id",
 			"template": "editor",
 			"async": false
 		}

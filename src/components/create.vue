@@ -10,33 +10,32 @@
 			<el-form-item label="作品描述" prop="description" v-if="config.description">
 				<el-input type="textarea" v-model="create.description"></el-input>
 			</el-form-item>
-			<el-form-item label="ID编辑框" prop="url" v-if="config.url">
-				<el-input v-model="create.url"></el-input>
-			</el-form-item>
-			<el-form-item label="添加标签" prop="moretag" v-if="config.tag">
+			<el-form-item label="添加标签" prop="moretag">
 				<el-input v-model="create.moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
 			<el-tag
 			  v-for="tag in create.tags"
 			  :closable="true"
 			  :close-transition="false"
 			  @close="handleClose(tag)"
-			  v-if="config.tag"
 			>
 			{{tag}}
 			</el-tag>
-			<el-upload
-			  action="//jsonplaceholder.typicode.com/posts/"
-			  type="drag"
-			  :thumbnail-mode="true"
-			  :on-preview="handlePreview"
-			  :on-remove="handleRemove"
-			>
-			  <i class="el-icon-upload"></i>
-			  <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-			  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-			</el-upload>
-			<el-form-item v-if="modify">
-				<el-button type="primary" @click="handleSubmit">立即创建</el-button>
+	        <el-upload
+	                action="http://120.24.4.254:7777/guisheng/upload_pics/"
+	                type="drag"
+	                :multiple = "false"
+	                :thumbnail-mode="true"
+	                :on-preview="handlePreview"
+	                :on-remove="handleRemove"
+	                :on-error="handleError"
+	        >
+	            <i class="el-icon-upload"></i>
+	            <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
+	            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+	        </el-upload>
+			<el-form-item>
+				<el-button type="primary"  v-show="modify" @click="handleSubmit">立即创建</el-button>
+				<el-button type="primary"  v-show="!modify" @click="handleSubmit">修改</el-button>
 				<el-button @click="handleReset">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -47,22 +46,19 @@ import 'whatwg-fetch'
 	export default{
 		data (){
 			return {
-				modify:false,
+				modify: true,
 				index:'',
 				url:'',
 				config:{
-					name:'',
-					tag:true,
-			        url:false,
-			        textarea:false
 				},
 				create: {
 					title: '',
 					author: '',
 					description:'',
 					moretag:'',
-					url:'',
-			        tags:['标签一','标签二','标签三','标签四','标签五','标签六']
+					id:'',
+			        tags:[],
+			        img_url:'http://120.24.4.254:7777/guisheng_pics/1489235212.jpg'
         		},
         		rules:{
         			title:[
@@ -88,11 +84,11 @@ import 'whatwg-fetch'
   		methods:{
   			geturl(){
   				this.url = this.$route.path
-  				console.log(this.$route)
-  				this.modify = this.$route.matched[1].path === 'edit' ? true:false
+  				this.modify = this.$route.params.aid ? false:true
   				this.index = this.nameArr.indexOf(this.url)
   				if(this.index != -1){
   					this.config = this.category[this.index]
+  					console.log(this.config)
   				}
   			},
 			handleClose(tag) {
@@ -104,12 +100,30 @@ import 'whatwg-fetch'
 			handleSubmit(ev) {
 				this.$refs.create.validate((valid) => {
 				  	if (valid) {
-				    	alert('submit!');
-				  	} else {
-				    	console.log('error submit!!');
-				    	return false;
-				  	}
-				});
+				  		let config = new Object()
+				  		config.author = this.create.author
+				  		config.title = this.create.title
+				  		config.url = this.create.img_url
+				  		for(var key in this.config){
+				  			if(this.config[key]===true){
+				  				config[key] = this.create[key]
+				  			}
+				  		}
+				  		console.log(JSON.stringify(config))
+				  		// fetch("/api/v1.0/news/", {
+		      //               method: 'POST',
+		      //               headers: {
+		      //                   'Accept': 'application/json',
+		      //                   'Content-Type': 'application/json'
+		      //               },
+		      //               body: JSON.stringify({
+
+		      //               })
+		      //           }).then(value =>{
+		      //           	console.log(value)
+		      //           })
+		            }
+				})     	
 			},
 			handleRemove(file, fileList) {
 		        console.log(file, fileList);
@@ -119,7 +133,7 @@ import 'whatwg-fetch'
 		    },
 			addTag(){
 				console.log(this.create.moretag)
-				this.create.tags.push({name:this.create.moretag})
+				this.create.tags.push(this.create.moretag)
 			}
   		}
 	}

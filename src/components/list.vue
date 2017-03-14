@@ -67,7 +67,16 @@
         </el-button>
       </div>
     </el-table-column>
-
+  </el-table>
+    <div class="block">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="currentPage1"
+        :page-size="20"
+        layout="total, prev, pager, next"
+        :total="1000">
+      </el-pagination>
+    </div>
 	</div>
 </template>
 <script>
@@ -78,12 +87,13 @@
 			}
 		},
 		created(){
-      fetch("/api"+"/news")
-      .then( (res) => {
-        return res.json()
-      }).then( value => {
-        this.tableData = value.tableData
-      })
+      console.log(this.$route.path)
+      // fetch("/api"+"/news")
+      // .then( (res) => {
+      //   return res.json()
+      // }).then( value => {
+      //   this.tableData = value.tableData
+      // })
 		},
   		methods:{
       handleEdit(index, row) {
@@ -99,6 +109,10 @@
       },
       filterTag(value, row) {
         return row.state === value;
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        console.log(`当前页: ${val}`);
       }
   		}
 	}

@@ -32,14 +32,13 @@ export default class MyEditor extends Component {
 			editorState: _editorState
 		})
 		e.preventDefault()
-
 	}
 
 	render() {
 		const { editorState } = this.state 
 		return (
 			<div className="container">
-				<div className="back"><a hre="" >返回</a></div>
+				<div className="back"><a href="" >返回</a></div>
 				<form onSubmit={this.onEditorSubmit}>
 					<Editor
 					   hashtag={{}}
@@ -51,7 +50,6 @@ export default class MyEditor extends Component {
 					<textarea 
 					   disabled 
 					   className="text" 
-					   
 					/>
 					<input type="submit" value="提交" /> 
 				</form>
