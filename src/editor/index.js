@@ -14,28 +14,28 @@ import './editor.scss'
 export default class MyEditor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			editorState : " "
-		}
 	}
 
-	onEditorStateChange = (editorState) => {
+	state = {
+		editorContent : ""
+	}
+
+	onEditorStateChange = (editorContent) => {
 		this.setState({
-			editorState
+			editorContent
 		})
 	}
 
-	onEditorSubmit = (e) => {
-		alert('提交成功!')
-		const _editorState = EditorState.push(this.state.editorState, ContentState.createFromText(''))
-		this.setState({
-			editorState: _editorState
-		})
-		e.preventDefault()
+	onEditorSubmit = (e) => {	
+		const { editorContent } = this.state 
+		if(editorContent) {
+			const HTML = draftToHtml(convertToRaw(editorContent.getCurrentContent()))
+			e.preventDefault()
+		}		
 	}
 
 	render() {
-		const { editorState } = this.state 
+		const { editorContent } = this.state 
 		return (
 			<div className="container">
 				<div className="back"><a href="" >返回</a></div>
@@ -46,10 +46,6 @@ export default class MyEditor extends Component {
 					   editorClassName="editor" 
 					   toolbarClassName="toolbar" 
 					   onEditorStateChange={this.onEditorStateChange}
-					/>
-					<textarea 
-					   disabled 
-					   className="text" 
 					/>
 					<input type="submit" value="提交" /> 
 				</form>

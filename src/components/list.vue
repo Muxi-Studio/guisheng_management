@@ -6,17 +6,17 @@
     border
     style="width: 100%">
     <el-table-column 
-      prop="state" 
+      prop="published" 
       label="状态" 
       width="100" 
       :filters="[{ text: '已发布', value: 1 }, { text: '未发布', value: 0 }]" 
       :filter-method="filterTag" inline-template>
-      <el-tag :type="row.state === 0 ? 'primary' : 'success'" close-transition>
-        {{row.state === 1 ? '已发布':'未发布'}}
+      <el-tag :type="row.published === 0 ? 'primary' : 'success'" close-transition>
+        {{row.published === 1 ? '已发布':'未发布'}}
       </el-tag>
     </el-table-column>
     <el-table-column
-      prop="id"
+      prop="article_id"
       label="id"
       width="100">
     </el-table-column>
@@ -40,7 +40,7 @@
       label="标签"
       width="200"
       inline-template>
-      <el-tag v-for="tag in row.tags">{{ tag }}</el-tag>
+      <el-tag v-for="tag in row.tag">{{ tag }}</el-tag>
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -72,7 +72,6 @@
       <el-pagination
         @current-change="handleCurrentChange"
         :current-page="currentPage1"
-        :page-size="20"
         layout="total, prev, pager, next"
         :total="1000">
       </el-pagination>
@@ -83,26 +82,42 @@
 	export default{
 		data(){
 			return {
-        tableData:[]
+        tableData:[],
+        currentPage:""
 			}
 		},
 		created(){
       console.log(this.$route.path)
-      // fetch("/api"+"/news")
-      // .then( (res) => {
-      //   return res.json()
-      // }).then( value => {
-      //   this.tableData = value.tableData
-      // })
+      fetch("/api/v1.0/feed/?page=1&count=10&kind=1")
+        .then( (res) => {
+          return res.json()
+        }).then( value => {
+          this.tableData = value
+          console.log(value)
+        })
 		},
   		methods:{
       handleEdit(index, row) {
         console.log(index, row);
-        this.$router.push({name:this.$route.matched[0].path,params: { aid:row.id }})
+        this.$router.push({name:this.$route.matched[0].path,params: { aid:row.article_id }})
 
       },
       handleDelete(index, row) {
-        console.log(index, row);
+        fetch(`/api/v1.0/news/${row.article_id}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(value =>{
+          console.log(value)
+        })
+        // fetch(`/api/v1.0/feed/?page=${this.currentPage}&count=10&kind=1`)
+        //   .then( (res) => {
+        //     return res.json()
+        //   }).then( value => {
+        //     this.tableData = value
+        //     console.log(value)
+        //   })
       },
       formatter(row, column) {
         return row.address;
@@ -111,9 +126,15 @@
         return row.state === value;
       },
       handleCurrentChange(val) {
-        this.currentPage = val;
-        console.log(`当前页: ${val}`);
-      }
+          this.currentPage = val;
+          fetch(`/api/v1.0/feed/?page=${val}&count=10&kind=1`)
+            .then((res) =>{
+              return res.json()
+            }).then(value =>{
+              this.tableData = value
+              console.log(value)
+            })
+        }
   		}
 	}
 </script>

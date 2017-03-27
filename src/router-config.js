@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Home from './components/index'
 import Create from './components/create'
 import List from './components/list'
+import PicList from './components/pic_list'
 
 //home
 const Pics = Vue.extend({
@@ -43,43 +44,6 @@ const Interaction_List = Vue.extend({
     mixins: [List]
 })
 
-
-//posted
-const Pics_posted = Vue.extend({
-	  name:"Pics",
-  	mixins: [List]
-})
-const News_posted = Vue.extend({
-	  name:"News",
-  	mixins: [List]
-})
-const Article_posted = Vue.extend({
-	  name:"Article",
-  	mixins: [List]
-})
-const Interaction_posted = Vue.extend({
-	  name:"Interaction",
-  	mixins: [List]
-})
-
-//unposted
-const Pics_unposted = Vue.extend({
-    name:"Pics_unposted",
-    mixins: [List]
-})
-const News_unposted = Vue.extend({
-    name:"News_unposted",
-    mixins: [List]
-})
-const Article_unposted = Vue.extend({
-    name:"Article_unposted",
-    mixins: [List]
-})
-const Interaction_unposted = Vue.extend({
-    name:"Interaction_unposted",
-    mixins: [List]
-})
-
 //create
 const PicsCre = Vue.extend({
 	  name:"Pics_Cre",
@@ -116,6 +80,11 @@ const Modify = Vue.extend({
     mixins: [Create]
 })
 
+const Pics_Modify = Vue.extend({
+    name:"Pics_Modify",
+    mixins: [PicList]
+})
+
 export default {
     routes: [
         { path: '/', component: Home },
@@ -132,7 +101,7 @@ export default {
               {
                 path:'edit/:aid',
                 name:'/pics',
-                component:Modify
+                component:Pics_Modify
               }
             ]
         },

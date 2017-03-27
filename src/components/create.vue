@@ -53,10 +53,9 @@ import 'whatwg-fetch'
 				},
 				create: {
 					title: '',
-					author: '',
+					author:'',
 					description:'',
 					moretag:'',
-					id:'',
 			        tags:[],
 			        img_url:'http://120.24.4.254:7777/guisheng_pics/1489235212.jpg'
         		},
@@ -101,27 +100,26 @@ import 'whatwg-fetch'
 				this.$refs.create.validate((valid) => {
 				  	if (valid) {
 				  		let config = new Object()
-				  		config.author = this.create.author
 				  		config.title = this.create.title
-				  		config.url = this.create.img_url
+				  		config.author_id = this.create.author
+				  		config.img_url = this.create.img_url
+				  		config.tags = this.create.tags
 				  		for(var key in this.config){
 				  			if(this.config[key]===true){
 				  				config[key] = this.create[key]
 				  			}
 				  		}
 				  		console.log(JSON.stringify(config))
-				  		// fetch("/api/v1.0/news/", {
-		      //               method: 'POST',
-		      //               headers: {
-		      //                   'Accept': 'application/json',
-		      //                   'Content-Type': 'application/json'
-		      //               },
-		      //               body: JSON.stringify({
-
-		      //               })
-		      //           }).then(value =>{
-		      //           	console.log(value)
-		      //           })
+				  		fetch("/api/v1.0/news/", {
+		                    method: 'POST',
+		                    headers: {
+		                        'Accept': 'application/json',
+		                        'Content-Type': 'application/json'
+		                    },
+		                    body: JSON.stringify(config)
+		                }).then(value =>{
+		                	console.log(value)
+		                })
 		            }
 				})     	
 			},
