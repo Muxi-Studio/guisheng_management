@@ -16,8 +16,13 @@
       </el-tag>
     </el-table-column>
     <el-table-column
+      prop="time"
+      label="编辑时间"
+      width="120">
+    </el-table-column>
+    <el-table-column
       prop="article_id"
-      label="id"
+      label="ID"
       width="100">
     </el-table-column>
     <el-table-column
@@ -40,7 +45,17 @@
       label="标签"
       width="200"
       inline-template>
-      <el-tag v-for="tag in row.tag">{{ tag }}</el-tag>
+      <el-tag v-if="row.tags[0]!=='' " v-for="tag in row.tags">{{ tag }}</el-tag>
+    </el-table-column>
+    <el-table-column
+      prop="img_url"
+      label="头图url"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="views"
+      label="浏览量"
+      width="100">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -73,27 +88,30 @@
         @current-change="handleCurrentChange"
         :current-page="currentPage1"
         layout="total, prev, pager, next"
-        :total="1000">
+        :total="count">
       </el-pagination>
     </div>
 	</div>
 </template>
 <script>
+import config from "../common/consts.js"
 	export default{
 		data(){
 			return {
         tableData:[],
-        currentPage:""
+        currentPage:"",
+        path: 0,
+        count: 0
 			}
 		},
 		created(){
-      console.log(this.$route.path)
-      fetch("/api/v1.0/feed/?page=1&count=10&kind=1")
+      this.path = config.list[this.$route.matched[0].path]
+      fetch("http://120.24.4.254:8888/api/v1.0/feed/?page=1&count=10&kind=" + this.path)
         .then( (res) => {
           return res.json()
         }).then( value => {
           this.tableData = value
-          console.log(value)
+          this.count = value[0].count
         })
 		},
   		methods:{
@@ -103,11 +121,10 @@
 
       },
       handleDelete(index, row) {
-        fetch(`/api/v1.0/news/${row.article_id}/`, {
+        fetch(`http://120.24.4.254:8888/api/v1.0/news/${row.article_id}/`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+        }).then((res) =>{
+          return res.json()
         }).then(value =>{
           console.log(value)
         })
@@ -127,7 +144,7 @@
       },
       handleCurrentChange(val) {
           this.currentPage = val;
-          fetch(`/api/v1.0/feed/?page=${val}&count=10&kind=1`)
+          fetch(`http://120.24.4.254:8888/api/v1.0/feed/?page=${val}&count=10&kind=${this.path}`)
             .then((res) =>{
               return res.json()
             }).then(value =>{

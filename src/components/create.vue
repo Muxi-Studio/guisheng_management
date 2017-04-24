@@ -25,6 +25,7 @@
 	                type="drag"
 	                :multiple = "false"
 	                :thumbnail-mode="true"
+	                :on-success="handleSuccess"
 	                :on-preview="handlePreview"
 	                :on-remove="handleRemove"
 	                :on-error="handleError"
@@ -46,6 +47,8 @@ import 'whatwg-fetch'
 	export default{
 		data (){
 			return {
+				kind:'',
+				id:0,
 				modify: true,
 				index:'',
 				url:'',
@@ -57,7 +60,7 @@ import 'whatwg-fetch'
 					description:'',
 					moretag:'',
 			        tags:[],
-			        img_url:'http://120.24.4.254:7777/guisheng_pics/1489235212.jpg'
+			        img_url:''
         		},
         		rules:{
         			title:[
@@ -82,12 +85,29 @@ import 'whatwg-fetch'
 		},
   		methods:{
   			geturl(){
-  				this.url = this.$route.path
-  				this.modify = this.$route.params.aid ? false:true
+  				this.url = this.$route.matched[0].path
+  				this.modify = this.$route.params.aid ? true:false
   				this.index = this.nameArr.indexOf(this.url)
   				if(this.index != -1){
   					this.config = this.category[this.index]
   					console.log(this.config)
+  				}
+  				if(this.modify){
+  				  this.id = this.$route.params.aid 
+  				  console.log(this.kind)
+		          fetch(`http://120.24.4.254:8888/api/v1.0${this.url}/${this.id}/`,{
+		                method: 'GET',
+		                headers: {
+		                	'Accept': 'application/json',
+                    		'Content-Type': 'application/json',
+		                    'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00='
+	                	},
+	            	})
+		            .then( (res) => {
+          				return res.json()
+        			}).then( value => {
+        				this.create = value
+        			})
   				}
   			},
 			handleClose(tag) {
@@ -113,6 +133,7 @@ import 'whatwg-fetch'
 				  		fetch("/api/v1.0/news/", {
 		                    method: 'POST',
 		                    headers: {
+		                    	'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
 		                        'Accept': 'application/json',
 		                        'Content-Type': 'application/json'
 		                    },
@@ -123,11 +144,15 @@ import 'whatwg-fetch'
 		            }
 				})     	
 			},
+			handleSuccess(response,file,fileList){
+				this.create.img_url = response.pic_url
+				console.log(response)
+			},
 			handleRemove(file, fileList) {
 		        console.log(file, fileList);
 		    },
 		    handlePreview(file) {
-		        console.log(file);
+		        console.log(file.response);
 		    },
 			addTag(){
 				console.log(this.create.moretag)

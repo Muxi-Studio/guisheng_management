@@ -17,7 +17,13 @@
 			"endpoint": "/editor/:kind/:id",
 			"template": "editor",
 			"async": false
-		}
+		},
+    {
+      "name": "deleteNews",
+      "endpoint": "/api/v1.0/news/",
+      "method": "delete",
+      "async": true
+    }
 	],
 	"data":{
 		"news":{
