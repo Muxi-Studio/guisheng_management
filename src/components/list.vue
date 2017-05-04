@@ -71,7 +71,7 @@
         </el-button>
         <el-button
           size="small"
-          @click="handleEdit($index, row)">
+          @click="handleEditBody($index, row)">
           编辑正文
         </el-button>
         <el-button
@@ -101,15 +101,25 @@ import config from "../common/consts.js"
         tableData:[],
         currentPage:"",
         path: 0,
-        count: 0
+        count: 0,
+        url:''
 			}
 		},
 		created(){
+      this.url = this.$route.matched[0].path
       this.path = config.list[this.$route.matched[0].path]
-      fetch("http://120.24.4.254:8888/api/v1.0/feed/?page=1&count=10&kind=" + this.path)
+      console.log(this.path)
+      fetch("/api/v1.0/list/?page=1&count=10&kind=" + this.path,{
+          headers: {
+            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+      })
         .then( (res) => {
           return res.json()
         }).then( value => {
+          console.log(value)
           this.tableData = value
           this.count = value[0].count
         })
@@ -120,9 +130,21 @@ import config from "../common/consts.js"
         this.$router.push({name:this.$route.matched[0].path,params: { aid:row.article_id }})
 
       },
+      handleEditBody(index, row){
+        if(this.url === '/pics'){
+          this.$router.push({name:'/pics/editor/',params:{id:row.article_id}})
+        }else{
+          window.location = `/editor${this.url}/${row.article_id}`
+        }
+      },
       handleDelete(index, row) {
-        fetch(`http://120.24.4.254:8888/api/v1.0/news/${row.article_id}/`, {
+        fetch(`/api/v1.0${this.url}/${row.article_id}/`, {
             method: 'DELETE',
+            headers: {
+            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
         }).then((res) =>{
           return res.json()
         }).then(value =>{
@@ -144,7 +166,13 @@ import config from "../common/consts.js"
       },
       handleCurrentChange(val) {
           this.currentPage = val;
-          fetch(`http://120.24.4.254:8888/api/v1.0/feed/?page=${val}&count=10&kind=${this.path}`)
+          fetch(`/api/v1.0/list/?page=${val}&count=10&kind=${this.path}`,{
+            headers: {
+              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+          })
             .then((res) =>{
               return res.json()
             }).then(value =>{

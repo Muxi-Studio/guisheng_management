@@ -51,8 +51,30 @@
 export default {
   data() {
     return {
-      currentDate: new Date()
-    };
+      currentDate: new Date(),
+      id:''
+    }
+  },
+  created(){
+      this.id = this.$route.params.id
+      this.updateCnt()
+      console.log(this.id)
+  },
+  methods:{
+    updateCnt(){
+      fetch(`/api/v1.0/pics/${this.id}/body/`, {
+          method: 'GET',
+          headers: {
+          'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+      }).then((res) =>{
+        return res.json()
+      }).then(value =>{
+        console.log(value)
+      }) 
+    }
   }
 }
 </script>

@@ -101,7 +101,11 @@ export default {
               {
                 path:'edit/:aid',
                 name:'/pics',
-                component:Pics_Modify
+                component:Modify
+              },{
+                path:'editor/:id',
+                name:'/pics/editor/',
+                component: Pics_Modify
               }
             ]
         },

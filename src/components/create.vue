@@ -12,31 +12,36 @@
 			</el-form-item>
 			<el-form-item label="添加标签" prop="moretag">
 				<el-input v-model="create.moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
-			<el-tag
-			  v-for="tag in create.tags"
-			  :closable="true"
-			  :close-transition="false"
-			  @close="handleClose(tag)"
-			>
-			{{tag}}
-			</el-tag>
-	        <el-upload
-	                action="http://120.24.4.254:7777/guisheng/upload_pics/"
-	                type="drag"
-	                :multiple = "false"
-	                :thumbnail-mode="true"
-	                :on-success="handleSuccess"
-	                :on-preview="handlePreview"
-	                :on-remove="handleRemove"
-	                :on-error="handleError"
-	        >
-	            <i class="el-icon-upload"></i>
-	            <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-	            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-	        </el-upload>
+			</el-form-item>
 			<el-form-item>
-				<el-button type="primary"  v-show="modify" @click="handleSubmit">立即创建</el-button>
-				<el-button type="primary"  v-show="!modify" @click="handleSubmit">修改</el-button>
+				<el-tag
+				  v-for="tag in create.tags"
+				  :closable="true"
+				  :close-transition="false"
+				  @close="handleClose(tag)"
+				>
+				{{tag}}
+				</el-tag>
+			</el-form-item>
+			<el-form-item>
+		        <el-upload
+		        		v-if="config.images"
+		                action="http://120.24.4.254:7777/guisheng/upload_pics/"
+		                type="drag"
+		                :multiple = "this.id===2?true:false"
+		                :thumbnail-mode="true"
+		                :on-success="handleSuccess"
+		                :on-preview="handlePreview"
+		                :on-remove="handleRemove"
+		                :on-error="handleError">
+		            <i class="el-icon-upload"></i>
+		            <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
+		            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+	        	</el-upload>
+	        </el-form-item>
+			<el-form-item>
+				<el-button type="primary"  v-show="!modify" @click="handleSubmit">立即创建</el-button>
+				<el-button type="primary"  v-show="modify" @click="handleSubmit">修改</el-button>
 				<el-button @click="handleReset">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -47,6 +52,7 @@ import 'whatwg-fetch'
 	export default{
 		data (){
 			return {
+				route:"",
 				kind:'',
 				id:0,
 				modify: true,
@@ -60,7 +66,12 @@ import 'whatwg-fetch'
 					description:'',
 					moretag:'',
 			        tags:[],
-			        img_url:''
+			        img_url:'',
+			        film: {
+					    film_img_url: "",
+					    film_url: "",
+					    scores: ""
+					}
         		},
         		rules:{
         			title:[
@@ -90,12 +101,10 @@ import 'whatwg-fetch'
   				this.index = this.nameArr.indexOf(this.url)
   				if(this.index != -1){
   					this.config = this.category[this.index]
-  					console.log(this.config)
   				}
   				if(this.modify){
   				  this.id = this.$route.params.aid 
-  				  console.log(this.kind)
-		          fetch(`http://120.24.4.254:8888/api/v1.0${this.url}/${this.id}/`,{
+		          fetch(`/api/v1.0${this.url}/${this.id}/`,{
 		                method: 'GET',
 		                headers: {
 		                	'Accept': 'application/json',
@@ -107,6 +116,7 @@ import 'whatwg-fetch'
           				return res.json()
         			}).then( value => {
         				this.create = value
+        				console.log(this.create)
         			})
   				}
   			},
@@ -121,7 +131,7 @@ import 'whatwg-fetch'
 				  	if (valid) {
 				  		let config = new Object()
 				  		config.title = this.create.title
-				  		config.author_id = this.create.author
+				  		config.author = this.create.author
 				  		config.img_url = this.create.img_url
 				  		config.tags = this.create.tags
 				  		for(var key in this.config){
@@ -130,8 +140,13 @@ import 'whatwg-fetch'
 				  			}
 				  		}
 				  		console.log(JSON.stringify(config))
-				  		fetch("/api/v1.0/news/", {
-		                    method: 'POST',
+				  		if(this.modify) {
+				  			this.route = `/api/v1.0${this.url}/${this.id}/`
+				  		}else{
+				  			this.route = `/api/v1.0${this.url}/`
+				  		}
+				  		fetch(this.route, {
+		                    method: this.modify?'PUT':'POST',
 		                    headers: {
 		                    	'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
 		                        'Accept': 'application/json',
@@ -149,7 +164,7 @@ import 'whatwg-fetch'
 				console.log(response)
 			},
 			handleRemove(file, fileList) {
-		        console.log(file, fileList);
+		        this.img_url = ''
 		    },
 		    handlePreview(file) {
 		        console.log(file.response);

@@ -3,8 +3,8 @@ name:['/news','/pics','/articles/pics','/articles/movies','/articles/music','/in
 category:[{
         name:'/news',
         url:false,
-        description:true,
-        images:false
+        description:false,
+        images:true
       },{
         name:'/pics',
         url:false,
