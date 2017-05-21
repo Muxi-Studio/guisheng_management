@@ -3,60 +3,67 @@
 /* by stephen 2017.2.20 */
 
 import React, { Component } from 'react'
-import { Editor } from 'react-draft-wysiwyg'
-import draftToHtml from 'draftjs-to-html'
 import { convertToRaw, EditorState, ContentState } from 'draft-js'
+import { Editor } from 'react-draft-wysiwyg'
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html'
 
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 import './editor.scss'
 
+var urlreg = new RegExp('\/([a-z]+)\/([0-9\/]+)')
+var path = window.location.pathname
+var result = path.match(urlreg)[0]
+
 export default class MyEditor extends Component {
 	constructor(props) {
 		super(props)
+		this.url = result
 	}
 
 	state = {
-		editorContent : "",
-		url:window.location.pathname.slice(7)
+		editorState : EditorState.createEmpty(),
 	}
 
-	onEditorStateChange = (editorContent) => {
+	onEditorStateChange = (editorState) => {
 		this.setState({
-			editorContent
+			editorState
 		})
 	}
   
   	componentDidMount() {
-  		// var reg = new RegExp('\/[0-9]+')
-  		// this.state.id = reg.exec(window.location.pathname)[0]
-        fetch(`/api/v1.0${this.state.url}/body/`, {
+        fetch(`/api/v1.0${this.url}/body/`, {
             method: 'GET',
             headers: {
             'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
           	},
         }).then((res) =>{
           return res.json()
         }).then(value =>{
-          console.log(value)
+        	console.log(value.body)
+        	if(value.body){
+				const blocksFromHtml = htmlToDraft(value.body);
+				const contentBlocks = blocksFromHtml.contentBlocks;
+				const contentState = ContentState.createFromBlockArray(contentBlocks);
+				const editorState = EditorState.createWithContent(contentState);
+				this.setState({editorState})
+			}
         })   	
   	}
 
-	onEditorSubmit = (e) => {	
-		const { editorContent } = this.state.editorContent
-		if(editorContent) {
-			const HTML = draftToHtml(convertToRaw(editorContent.getCurrentContent()))
+	onEditorSubmit = (e) => {
+		e.preventDefault()
+		const { editorState } = this.state
+		if(editorState) {
+			const HTML = draftToHtml(convertToRaw(editorState.getCurrentContent()))
 			e.preventDefault()
-			// console.log(HTML)
-			var url = window.location.pathname.slice(7)
-        fetch(`/api/v1.0${this.state.url}/body/`, {
+        fetch(`/api/v1.0${this.url}/body/`, {
             method: 'PUT',
             headers: {
-            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
+	            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+	          	'Accept': 'application/json',
+			    'Content-Type': 'application/json'
           	},
           	body: JSON.stringify({body:HTML})
         }).then((res) =>{
@@ -68,12 +75,12 @@ export default class MyEditor extends Component {
 	}
 
 	render() {
-		const { editorContent } = this.state.editorContent
 		return (
 			<div className="container">
 				<div className="back"><a href="" >返回</a></div>
 				<form onSubmit={this.onEditorSubmit}>
 					<Editor
+					   editorState={this.state.editorState}
 					   hashtag={{}}
 					   wrapperClassName="wrapper" 
 					   editorClassName="editor" 

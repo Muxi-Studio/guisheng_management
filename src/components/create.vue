@@ -7,11 +7,35 @@
 			<el-form-item label="作者" prop="author">
 				<el-input v-model="create.author"></el-input>
 			</el-form-item>
+			<el-form-item label="责任编辑人" prop="editor">
+				<el-input v-model="create.editor"></el-input>
+			</el-form-item>
 			<el-form-item label="作品描述" prop="description" v-if="config.description">
 				<el-input type="textarea" v-model="create.description"></el-input>
 			</el-form-item>
 			<el-form-item label="添加标签" prop="moretag">
-				<el-input v-model="create.moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
+				<el-input v-model="moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
+			</el-form-item>
+			<el-form-item label="图片url" prop="img_url" v-if="config.images">
+				<el-input v-model="create.img_url"></el-input>
+			</el-form-item>
+			<el-form-item label="音乐URL" prop="music_url" v-if="config.music_img_url">
+				<el-input v-model="create.music_url" v-if="config.music_url"></el-input>
+			</el-form-item>
+			<el-form-item label="音乐标题" prop="music_title" v-if="config.music_title">
+				<el-input v-model="create.music_title"></el-input>
+			</el-form-item>
+			<el-form-item label="音乐图片" prop="music_img_url" v-if="config.music_img_url">
+				<el-input v-model="create.music_img_url"></el-input>
+			</el-form-item>
+			<el-form-item label="歌手" prop="singer" v-if="config.singer">
+				<el-input v-model="create.singer"></el-input>
+			</el-form-item>
+			<el-form-item label="电影url" prop="film_url" v-if="config.film_url">
+				<el-input v-model="create.film_url"></el-input>
+			</el-form-item>
+			<el-form-item label="电影图片url" prop="film_img_url" v-if="config.film_img_url">
+				<el-input v-model="create.film_img_url"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-tag
@@ -55,23 +79,28 @@ import 'whatwg-fetch'
 				route:"",
 				kind:'',
 				id:0,
+				flag:1, // articles or other
 				modify: true,
 				index:'',
 				url:'',
+				url_kind:'',
 				config:{
 				},
+				moretag:'',
 				create: {
 					title: '',
 					author:'',
+					editor:'',
 					description:'',
-					moretag:'',
 			        tags:[],
 			        img_url:'',
-			        film: {
-					    film_img_url: "",
-					    film_url: "",
-					    scores: ""
-					}
+			        music_title:'',
+			        music_img_url:'',
+			        music_url:'' ,  //返回一个音乐的URL
+			        singer:'',
+			        film_url:'',  //返回一个电影的URL
+			        scores:'',
+			        film_img_url:''
         		},
         		rules:{
         			title:[
@@ -79,6 +108,9 @@ import 'whatwg-fetch'
         			],
         			author:[
         				{ required: true, message: '请输入作者名称', trigger: 'blur' }
+        			],
+        			editor:[
+        				{ required: true, message: '请输入编辑者名称', trigger: 'blur' }
         			]
         		},
 			}
@@ -89,16 +121,28 @@ import 'whatwg-fetch'
 	      	},
 	      	nameArr:{
 	      		type: Array
+	      	},
+	      	list:{
+	      		type: Object
 	      	}
   		},
 		created(){
 			this.geturl()
+			console.log(this.list[this.url_kind])
 		},
   		methods:{
   			geturl(){
   				this.url = this.$route.matched[0].path
+  				if(this.url === '/article'){
+  					var reg = new RegExp('\/article\/([a-z]+)\/')
+  					this.url_kind = `${this.$route.matched[1].path}/`.match(reg)[0]
+  					console.log(this.url_kind)
+  					this.flag = 0
+  				}else{
+  					this.url_kind = this.url
+  				}
   				this.modify = this.$route.params.aid ? true:false
-  				this.index = this.nameArr.indexOf(this.url)
+  				this.index = this.nameArr.indexOf(this.url_kind)
   				if(this.index != -1){
   					this.config = this.category[this.index]
   				}
@@ -116,7 +160,6 @@ import 'whatwg-fetch'
           				return res.json()
         			}).then( value => {
         				this.create = value
-        				console.log(this.create)
         			})
   				}
   			},
@@ -129,22 +172,29 @@ import 'whatwg-fetch'
 			handleSubmit(ev) {
 				this.$refs.create.validate((valid) => {
 				  	if (valid) {
-				  		let config = new Object()
-				  		config.title = this.create.title
-				  		config.author = this.create.author
-				  		config.img_url = this.create.img_url
-				  		config.tags = this.create.tags
-				  		for(var key in this.config){
-				  			if(this.config[key]===true){
-				  				config[key] = this.create[key]
-				  			}
+				  		if(this.flag){
+					  		var result = new Object()
+					  		result.title = this.create.title
+					  		result.author = this.create.author
+					  		result.editor = this.create.editor
+					  		result.img_url = this.create.img_url
+					  		result.tags = this.create.tags
+					  		for(var key in this.result){
+					  			if(this.result[key]===true){
+					  				result[key] = this.create[key]
+					  			}
+					  		}
+				  		}else{
+				  			result = this.create
+				  			result.flag = this.list[this.url_kind]
+				  			console.log(result.flag)
 				  		}
-				  		console.log(JSON.stringify(config))
 				  		if(this.modify) {
 				  			this.route = `/api/v1.0${this.url}/${this.id}/`
 				  		}else{
 				  			this.route = `/api/v1.0${this.url}/`
 				  		}
+				  		console.log(result)
 				  		fetch(this.route, {
 		                    method: this.modify?'PUT':'POST',
 		                    headers: {
@@ -152,7 +202,7 @@ import 'whatwg-fetch'
 		                        'Accept': 'application/json',
 		                        'Content-Type': 'application/json'
 		                    },
-		                    body: JSON.stringify(config)
+		                    body: JSON.stringify(result)
 		                }).then(value =>{
 		                	console.log(value)
 		                })
@@ -170,8 +220,7 @@ import 'whatwg-fetch'
 		        console.log(file.response);
 		    },
 			addTag(){
-				console.log(this.create.moretag)
-				this.create.tags.push(this.create.moretag)
+				this.create.tags.push(this.moretag)
 			}
   		}
 	}

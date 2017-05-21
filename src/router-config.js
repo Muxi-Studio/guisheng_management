@@ -35,8 +35,16 @@ const News_List = Vue.extend({
     name:"News",
     mixins: [List]
 })
-const Article_List = Vue.extend({
-    name:"Article",
+const Article_List_Pics = Vue.extend({
+    name:"ArticlePics",
+    mixins: [List]
+})
+const Article_List_Movies = Vue.extend({
+    name:"ArticleMovies",
+    mixins: [List]
+})
+const Article_List_Music = Vue.extend({
+    name:"ArticleMusic",
     mixins: [List]
 })
 const Interaction_List = Vue.extend({
@@ -54,7 +62,7 @@ const NewsCre = Vue.extend({
   	mixins: [Create]
 })
 const ArticleCre_Music = Vue.extend({
-	  name:"ArticleCre_Muxic",
+	  name:"ArticleCre_Music",
   	mixins: [Create]
 })
 const ArticleCre_Pics = Vue.extend({
@@ -127,7 +135,7 @@ export default {
               }
           	]
         },
-        { path: '/articles',component:Article,
+        { path: '/article',component:Article,
           children: [
             {
               path: 'movies',
@@ -142,12 +150,30 @@ export default {
               component: ArticleCre_Music
             },
             {
-              path: 'list',
-              component: Article_List
+              path: 'list/pics',
+              component: Article_List_Pics
+            },
+            {
+              path: 'list/movies',
+              component: Article_List_Movies
+            },
+            {
+              path: 'list/music',
+              component: Article_List_Music
             },
               {
-                path:'edit/:aid',
-                name:'/articles',
+                path:'pics/edit/:aid',
+                name:'/article/1',
+                component:Modify
+              },
+              {
+                path:'movies/edit/:aid',
+                name:'/article/2',
+                component:Modify
+              },
+              {
+                path:'music/edit/:aid',
+                name:'/article/3',
                 component:Modify
               }
           ]

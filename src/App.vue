@@ -23,12 +23,14 @@
 					  		<el-submenu index="/articles">
 					    		<template slot="title">水墨</template>
 					    		<el-menu-item-group title="新建">
-					    			<el-menu-item index="/articles/pics">图片</el-menu-item>
-					    			<el-menu-item index="/articles/movies">电影</el-menu-item>
-					      			<el-menu-item index="/articles/music">音乐</el-menu-item>
+					    			<el-menu-item index="/article/pics">图片</el-menu-item>
+					    			<el-menu-item index="/article/movies">电影</el-menu-item>
+					      			<el-menu-item index="/article/music">音乐</el-menu-item>
 					    		</el-menu-item-group>
 					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/articles/list">查看列表</el-menu-item>
+					    			<el-menu-item index="/article/list/pics">图片列表</el-menu-item>
+					    			<el-menu-item index="/article/list/movies">电影列表</el-menu-item>
+					    			<el-menu-item index="/article/list/music">音乐列表</el-menu-item>
 					    		</el-menu-item-group>
 					  		</el-submenu>
 					  		<el-submenu index="/interaction">

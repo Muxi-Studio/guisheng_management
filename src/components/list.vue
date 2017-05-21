@@ -94,6 +94,8 @@
 	</div>
 </template>
 <script>
+var route = ''
+var sub = ''
 import config from "../common/consts.js"
 	export default{
 		data(){
@@ -108,8 +110,17 @@ import config from "../common/consts.js"
 		created(){
       this.url = this.$route.matched[0].path
       this.path = config.list[this.$route.matched[0].path]
-      console.log(this.path)
-      fetch("/api/v1.0/list/?page=1&count=10&kind=" + this.path,{
+      sub = config.list[this.$route.matched[1].path]
+      if(this.path == 3){
+        route = `${this.path}&flag=${sub}`
+      }else{
+        route = this.path
+      }
+      this.updateCnt()
+		},
+  		methods:{
+      updateCnt(){
+        fetch("/api/v1.0/list/?page=1&count=10&kind=" + route,{
           headers: {
             'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
               'Accept': 'application/json',
@@ -119,15 +130,19 @@ import config from "../common/consts.js"
         .then( (res) => {
           return res.json()
         }).then( value => {
-          console.log(value)
           this.tableData = value
-          this.count = value[0].count
+          if(value[0]){
+            this.count = value[0].count
+          }
         })
-		},
-  		methods:{
+      },
       handleEdit(index, row) {
         console.log(index, row);
-        this.$router.push({name:this.$route.matched[0].path,params: { aid:row.article_id }})
+        if(sub){
+          this.$router.push({name:`${this.url}/${sub}`,params: { aid:row.article_id }})
+        }else{
+          this.$router.push({name:this.url,params: { aid:row.article_id }})
+        }
 
       },
       handleEditBody(index, row){
@@ -149,6 +164,7 @@ import config from "../common/consts.js"
           return res.json()
         }).then(value =>{
           console.log(value)
+          this.updateCnt()
         })
         // fetch(`/api/v1.0/feed/?page=${this.currentPage}&count=10&kind=1`)
         //   .then( (res) => {
@@ -166,7 +182,7 @@ import config from "../common/consts.js"
       },
       handleCurrentChange(val) {
           this.currentPage = val;
-          fetch(`/api/v1.0/list/?page=${val}&count=10&kind=${this.path}`,{
+          fetch(`/api/v1.0/list/?page=${val}&count=10&kind=${route}`,{
             headers: {
               'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
                 'Accept': 'application/json',
