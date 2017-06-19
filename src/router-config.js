@@ -3,6 +3,7 @@ import Home from './components/index'
 import Create from './components/create'
 import List from './components/list'
 import PicList from './components/pic_list'
+import evdPic from './components/evdPic'
 
 //home
 const Pics = Vue.extend({
@@ -47,7 +48,11 @@ const Article_List_Music = Vue.extend({
     name:"ArticleMusic",
     mixins: [List]
 })
-const Interaction_List = Vue.extend({
+const Interaction_List_Tea = Vue.extend({
+    name:"Interaction",
+    mixins: [List]
+})
+const Interaction_List_Topic = Vue.extend({
     name:"Interaction",
     mixins: [List]
 })
@@ -81,6 +86,7 @@ const InteractionCre_Topic = Vue.extend({
     name:"InteractionCre_Topic",
     mixins: [Create]
 })
+
 
 //modify
 const Modify = Vue.extend({
@@ -189,15 +195,26 @@ export default {
                 component: InteractionCre_Topic
               },
               {
-                path: 'list',
-                component: Interaction_List
+                path:'tea/edit/:aid',
+                name:'/interaction/1',
+                component:Modify
               },
               {
-                path:'edit/:aid',
-                name:'/interaction',
+                path:'topic/edit/:aid',
+                name:'/interaction/2',
                 component:Modify
+              },
+              {
+                path: 'list/tea',
+                component: Interaction_List_Tea
+              },
+              {
+                path: 'list/topic',
+                component: Interaction_List_Topic
               }
             ]
+        },{ 
+          path: '/everydaypic',component:evdPic
         }
     ]
 }

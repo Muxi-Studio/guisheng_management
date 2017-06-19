@@ -76,9 +76,21 @@
         </el-button>
         <el-button
           size="small"
-          type="danger"
-          @click="handleDelete($index, row)">
-          删除
+          type="text">
+          操作
+          <template scope="scope">
+            <el-popover trigger="hover" placement="top">
+                <el-button type="primary" size="small" v-if="row.published" @click="handleUnPublish($index,row)">取消发布</el-button>
+                <el-button type="primary" size="small" v-if="!row.published" @click="handlePublish($index,row)">发布</el-button>
+                <span v-if="subroute=='/interaction/list/tea'">
+                  <el-button type="primary" size="small" v-if="row.published &&!row.tea" @click="handlePop($index,row)">置顶</el-button>
+                </span>
+                <el-button type="danger" size="small" @click="handleDelete($index, row)">删除</el-button>
+              <div slot="reference" class="name-wrapper">
+                操作
+              </div>
+            </el-popover>
+          </template>
         </el-button>
       </div>
     </el-table-column>
@@ -104,14 +116,17 @@ import config from "../common/consts.js"
         currentPage:"",
         path: 0,
         count: 0,
-        url:''
+        url:'',
+        subroute:''
 			}
 		},
 		created(){
       this.url = this.$route.matched[0].path
       this.path = config.list[this.$route.matched[0].path]
-      sub = config.list[this.$route.matched[1].path]
-      if(this.path == 3){
+      this.subroute = this.$route.matched[1].path
+      console.log(this.subroute)
+      sub = config.list[this.subroute]
+      if(this.path == 3||this.path == 4){
         route = `${this.path}&flag=${sub}`
       }else{
         route = this.path
@@ -137,13 +152,53 @@ import config from "../common/consts.js"
         })
       },
       handleEdit(index, row) {
-        console.log(index, row);
         if(sub){
           this.$router.push({name:`${this.url}/${sub}`,params: { aid:row.article_id }})
         }else{
           this.$router.push({name:this.url,params: { aid:row.article_id }})
         }
-
+      },
+      handlePop(index,row){
+        fetch("/api/v1.0/tea/", {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({article_id:row.article_id})
+        }).then(value =>{
+          console.log(value)
+        })
+      },
+      handleUnPublish(index,row){
+        fetch("/api/v1.0/unpublish/", {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({kind:row.kind,post_id:row.article_id})
+        }).then(value =>{
+          console.log(value)
+          this.updateCnt()
+        })        
+      },
+      handlePublish(index,row){
+        console.log(row)
+        fetch("/api/v1.0/publish/", {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({kind:row.kind,post_id:row.article_id})
+        }).then(value =>{
+          console.log(value)
+          this.updateCnt()
+        })  
       },
       handleEditBody(index, row){
         if(this.url === '/pics'){

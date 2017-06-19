@@ -72,6 +72,7 @@
 	</div>
 </template>
 <script>
+import config from '../common/consts'
 import 'whatwg-fetch'
 	export default{
 		data (){
@@ -79,7 +80,6 @@ import 'whatwg-fetch'
 				route:"",
 				kind:'',
 				id:0,
-				flag:1, // articles or other
 				modify: true,
 				index:'',
 				url:'',
@@ -115,36 +115,28 @@ import 'whatwg-fetch'
         		},
 			}
 		},
-		props: {
-	    	category: {
-	          	type: Array
-	      	},
-	      	nameArr:{
-	      		type: Array
-	      	},
-	      	list:{
-	      		type: Object
-	      	}
-  		},
 		created(){
 			this.geturl()
-			console.log(this.list[this.url_kind])
+			console.log(this.url_kind)
+			console.log(config.list[this.url_kind])
 		},
   		methods:{
   			geturl(){
   				this.url = this.$route.matched[0].path
+  				var reg
   				if(this.url === '/article'){
-  					var reg = new RegExp('\/article\/([a-z]+)\/')
+  					reg = new RegExp('\/article\/([a-z]+)\/')
   					this.url_kind = `${this.$route.matched[1].path}/`.match(reg)[0]
-  					console.log(this.url_kind)
-  					this.flag = 0
+  				}else if(this.url === '/interaction'){
+  					reg = new RegExp('\/interaction\/([a-z]+)\/')
+  					this.url_kind = `${this.$route.matched[1].path}/`.match(reg)[0]
   				}else{
   					this.url_kind = this.url
   				}
   				this.modify = this.$route.params.aid ? true:false
-  				this.index = this.nameArr.indexOf(this.url_kind)
-  				if(this.index != -1){
-  					this.config = this.category[this.index]
+  				// this.index = this.nameArr.indexOf(this.url_kind)
+  				if(config.category.hasOwnProperty(this.url_kind)){
+  					this.config = config.category[this.url_kind]
   				}
   				if(this.modify){
   				  this.id = this.$route.params.aid 
@@ -172,22 +164,25 @@ import 'whatwg-fetch'
 			handleSubmit(ev) {
 				this.$refs.create.validate((valid) => {
 				  	if (valid) {
-				  		if(this.flag){
+				  		if(this.url === '/article'){
+					  		result = this.create
+				  			result.flag = config.list[this.url_kind]
+				  			console.log(result.flag)
+				  		}else{
 					  		var result = new Object()
 					  		result.title = this.create.title
 					  		result.author = this.create.author
 					  		result.editor = this.create.editor
 					  		result.img_url = this.create.img_url
 					  		result.tags = this.create.tags
-					  		for(var key in this.result){
-					  			if(this.result[key]===true){
+					  		if(this.url === '/interaction'){
+					  			result.flag = config.list[this.url_kind]
+					  		}
+					  		for(var key in this.config){
+					  			if(this.config[key]===true){
 					  				result[key] = this.create[key]
 					  			}
 					  		}
-				  		}else{
-				  			result = this.create
-				  			result.flag = this.list[this.url_kind]
-				  			console.log(result.flag)
 				  		}
 				  		if(this.modify) {
 				  			this.route = `/api/v1.0${this.url}/${this.id}/`

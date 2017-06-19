@@ -40,9 +40,11 @@
 					    			<el-menu-item index="/interaction/topic">话题</el-menu-item>
 					    		</el-menu-item-group>
 					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/interaction/list">查看列表</el-menu-item>
+					    			<el-menu-item index="/interaction/list/tea">喝茶吧列表</el-menu-item>
+					    			<el-menu-item index="/interaction/list/topic">话题列表</el-menu-item>
 					    		</el-menu-item-group>
 					  		</el-submenu>
+							<el-menu-item index="/everydaypic">每日一图</el-menu-item>
 						</el-menu>
 					</div>
 				</el-col>
