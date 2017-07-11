@@ -4,6 +4,7 @@ import Create from './components/create'
 import List from './components/list'
 import PicList from './components/pic_list'
 import evdPic from './components/evdPic'
+import Comment from './components/comment'
 
 //home
 const Pics = Vue.extend({
@@ -120,6 +121,10 @@ export default {
                 path:'editor/:id',
                 name:'/pics/editor/',
                 component: Pics_Modify
+              },{
+                path:'comments/:id',
+                name:'/pics/comment',
+                component: Comment
               }
             ]
         },
@@ -138,6 +143,10 @@ export default {
                 path:'edit/:aid',
                 name:'/news',
                 component:Modify
+              },{
+                path:'comments/:id',
+                name:'/news/comment',
+                component: Comment
               }
           	]
         },
@@ -181,6 +190,10 @@ export default {
                 path:'music/edit/:aid',
                 name:'/article/3',
                 component:Modify
+              },{
+                path:'comments/:id',
+                name:'/article/comment',
+                component: Comment
               }
           ]
         },
@@ -211,6 +224,10 @@ export default {
               {
                 path: 'list/topic',
                 component: Interaction_List_Topic
+              },{
+                path:'comments/:id',
+                name:'/interaction/comment',
+                component: Comment
               }
             ]
         },{ 

@@ -1,6 +1,5 @@
 <template>
 	<div class="wrap">
-		<div v-if="category === '/news'">la</div>
   <el-table
     :data="tableData"
     border
@@ -82,10 +81,12 @@
             <el-popover trigger="hover" placement="top">
                 <el-button type="primary" size="small" v-if="row.published" @click="handleUnPublish($index,row)">取消发布</el-button>
                 <el-button type="primary" size="small" v-if="!row.published" @click="handlePublish($index,row)">发布</el-button>
+                 <el-button type="primary" size="small" @click="handleComment($index, row)">查看评论</el-button>
                 <span v-if="subroute=='/interaction/list/tea'">
                   <el-button type="primary" size="small" v-if="row.published &&!row.tea" @click="handlePop($index,row)">置顶</el-button>
                 </span>
                 <el-button type="danger" size="small" @click="handleDelete($index, row)">删除</el-button>
+
               <div slot="reference" class="name-wrapper">
                 操作
               </div>
@@ -133,7 +134,7 @@ import config from "../common/consts.js"
       }
       this.updateCnt()
 		},
-  		methods:{
+  	methods:{
       updateCnt(){
         fetch("/api/v1.0/list/?page=1&count=10&kind=" + route,{
           headers: {
@@ -142,14 +143,33 @@ import config from "../common/consts.js"
               'Content-Type': 'application/json'
           },
       })
-        .then( (res) => {
-          return res.json()
-        }).then( value => {
-          this.tableData = value
-          if(value[0]){
-            this.count = value[0].count
-          }
+      .then( (res) => {
+        return res.json()
+      }).then( value => {
+        this.tableData = value
+        console.log(this.tableData)
+        if(value[0]){
+          this.count = value[0].count
+        }
+        if(route === "4&flag=1"){
+          fetch("/api/v1.0/tea/", {
+              method: 'Get',
+              headers: {
+                'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              }
+          }).then( (res) => {
+            return res.json()
+          }).then( value => {
+            this.tableData.unshift(value)
+            console.log(this.tableData)
+          })
+        }
         })
+      },
+      handleComment(index, row){
+        this.$router.push({name:`${this.url}/comment`,params: { id:row.article_id }})
       },
       handleEdit(index, row) {
         if(sub){
@@ -181,12 +201,10 @@ import config from "../common/consts.js"
             },
             body: JSON.stringify({kind:row.kind,post_id:row.article_id})
         }).then(value =>{
-          console.log(value)
           this.updateCnt()
         })        
       },
       handlePublish(index,row){
-        console.log(row)
         fetch("/api/v1.0/publish/", {
             method: 'POST',
             headers: {
@@ -196,7 +214,6 @@ import config from "../common/consts.js"
             },
             body: JSON.stringify({kind:row.kind,post_id:row.article_id})
         }).then(value =>{
-          console.log(value)
           this.updateCnt()
         })  
       },
@@ -233,7 +250,7 @@ import config from "../common/consts.js"
         return row.address;
       },
       filterTag(value, row) {
-        return row.state === value;
+        return row.published === value;
       },
       handleCurrentChange(val) {
           this.currentPage = val;
@@ -244,12 +261,11 @@ import config from "../common/consts.js"
                 'Content-Type': 'application/json'
             },
           })
-            .then((res) =>{
-              return res.json()
-            }).then(value =>{
-              this.tableData = value
-              console.log(value)
-            })
+          .then((res) =>{
+            return res.json()
+          }).then(value =>{
+            this.tableData = value
+          })
         }
   		}
 	}
