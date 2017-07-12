@@ -45,6 +45,7 @@
 					    		</el-menu-item-group>
 					  		</el-submenu>
 							<el-menu-item index="/everydaypic">每日一图</el-menu-item>
+							<el-menu-item index="/user">用户管理</el-menu-item>
 						</el-menu>
 					</div>
 				</el-col>

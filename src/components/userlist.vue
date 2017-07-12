@@ -16,29 +16,29 @@
     </el-table-column>
     <el-table-column
       prop="name"
-      label="姓名"
-      width="180">
-    </el-table-column>
-    <el-table-column
-      prop="message"
-      label="评论内容">
-    </el-table-column>
-    <el-table-column
-      prop="likes"
-      label="评论点赞"
-      width="100">
+      label="姓名">
     </el-table-column>
     <el-table-column
       width="100"
       :context="_self"
       inline-template
       label="操作">
+      <div>
         <el-button
           size="small"
           type="text"
-          @click="handleDelete($index, row)">
-          删除
+          v-if="row.user_role == 1"
+          @click="setRole($index, row,1)">
+          设为用户
         </el-button>
+        <el-button
+          size="small"
+          type="text"
+          v-if="row.user_role == 0"
+          @click="setRole($index, row,0)">
+          设为作者
+        </el-button>
+      </div>
     </el-table-column>
   </el-table>
   <div class="block">
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+var req = "";
 import config from "../common/consts.js"
   export default {
     data(){
@@ -62,18 +63,11 @@ import config from "../common/consts.js"
       }
     },
     created(){
-      this.url = this.$route.matched[0].path
-      this.path = config.list[this.$route.matched[0].path]
-      // this.subroute = this.$route.matched[1].path
-      // console.log(this.subroute)
-      // sub = config.list[this.subroute]
-      console.log(this.path)
-      console.log(this.$route.params)
       this.updateCnt()
     },
     methods:{
       updateCnt(){
-        fetch(`/api/v1.0/comments/list/?id=${this.$route.params.id}&kind=${this.path}&count=10&page=1`,{
+        fetch(`/api/v1.0/user/list/?count=10&page=1`,{
             headers: {
               'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
                 'Accept': 'application/json',
@@ -83,12 +77,13 @@ import config from "../common/consts.js"
         .then((res) =>{
           return res.json()
         }).then(value =>{
-          this.tableData = value
+          this.tableData = value.users
+          this.count = value.num
         })
       },
       handleCurrentChange(val) {
           this.currentPage = val;
-          fetch(`/api/v1.0/comments/list/?id=${this.$route.params.id}&kind=${this.path}&count=10&page=${val}`,{
+          fetch(`/api/v1.0/user/list/?count=10&page=${val}`,{
             headers: {
               'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
                 'Accept': 'application/json',
@@ -98,27 +93,29 @@ import config from "../common/consts.js"
           .then((res) =>{
             return res.json()
           }).then(value =>{
-            this.tableData = value
+            this.tableData = value.users
           })
         },
       filterTag(value, row) {
         return row.user_role === value;
       },
-      handleDelete(index, row){
-        console.log(row)
-        fetch(`/api/v1.0/comments/${row.comment_id}/`, {
-            method: 'DELETE',
+      setRole(index, row, role){
+        if(role){
+          req = "/api/v1.0/role/user/"
+        }else{
+          req = "/api/v1.0/role/author/"
+        }
+        fetch(req, {
+            method: 'POST',
             headers: {
             'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
               'Accept': 'application/json',
               'Content-Type': 'application/json'
-          },
-        }).then((res) =>{
-          return res.json()
-        }).then(value =>{
-          console.log(value)
-          this.updateCnt()
-        })
+            },
+            body: JSON.stringify({id:row.id})
+          }).then(value =>{
+            this.updateCnt()
+          })  
       }
     }
   }

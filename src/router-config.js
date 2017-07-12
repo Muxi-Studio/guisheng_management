@@ -5,6 +5,7 @@ import List from './components/list'
 import PicList from './components/pic_list'
 import evdPic from './components/evdPic'
 import Comment from './components/comment'
+import User from './components/userlist'
 
 //home
 const Pics = Vue.extend({
@@ -232,6 +233,8 @@ export default {
             ]
         },{ 
           path: '/everydaypic',component:evdPic
+        },{
+          path: '/user',component:User
         }
     ]
 }
