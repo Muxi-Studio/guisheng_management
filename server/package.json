@@ -1,0 +1,26 @@
+{
+  "name": "guisheng_management",
+  "version": "1.0.0",
+  "description": "guisheng management pages",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ninja start",
+    "build": "rm -rf ./dist/* && webpack --config webpack.build.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Muxi-Studio/guisheng_management.git"
+  },
+  "author": "Muxi FE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Muxi-Studio/guisheng_management/issues"
+  },
+  "dependencies": {
+    "koa": "^2.2.0",
+    "koa-router": "^7.2.0",
+    "koa-send": "^4.1.0",
+    "koa-useragent": "^1.0.0",
+    "swig": "^1.4.2"
+  }
+}

@@ -6,12 +6,12 @@ const autoprefixer = require('autoprefixer');
 
 module.exports = {
     entry: {
-        'main.js': ['./src/main.js', 'webpack-hot-middleware/client'],
-        'editor.js': ['./src/editor.js', 'webpack-hot-middleware/client']
+        'main.js': ['./src/main.js'],
+        'editor.js': ['./src/editor.js']
     },
     output: {
         path: path.join(__dirname, "dist"),
-        publicPath: '/static',
+        publicPath: '/static/',
         filename: '[name]'
     },
     module: {
@@ -77,12 +77,14 @@ module.exports = {
         new HtmlWebpackPlugin({
             filename: 'templates/home.html',
             template: './templates/home.ejs',
-            inject: false
+            inject: false,
+            chunks: ['main.js']
         }),
         new HtmlWebpackPlugin({
             filename: 'templates/editor.html',
             template: './templates/editor.ejs',
-            inject: false
+            inject: false,
+            chunks: ['editor.js']
         }),
         new webpack.optimize.UglifyJsPlugin({
             mangle: true,

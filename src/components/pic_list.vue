@@ -20,6 +20,7 @@
         <el-button type="primary" @click="handleSubmit">立即创建</el-button>
         <el-button @click="handleReset">重置</el-button>
       </el-form-item>
+    </el-form>
   </el-row>
   <el-row>
     <el-col class="col-pics" :span="8" v-for="(o, index) in this.content.pics" :offset="3">
