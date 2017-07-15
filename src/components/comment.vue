@@ -83,7 +83,8 @@ import config from "../common/consts.js"
         .then((res) =>{
           return res.json()
         }).then(value =>{
-          this.tableData = value
+          this.tableData = value.comments
+          this.count = value.num
         })
       },
       handleCurrentChange(val) {
@@ -98,7 +99,7 @@ import config from "../common/consts.js"
           .then((res) =>{
             return res.json()
           }).then(value =>{
-            this.tableData = value
+            this.tableData = value.comments
           })
         },
       filterTag(value, row) {

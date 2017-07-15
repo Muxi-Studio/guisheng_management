@@ -10,11 +10,15 @@ module.exports = {
         'editor.js': ['./src/editor.js', 'webpack-hot-middleware/client']
     },
     output: {
-        path: '/',
-        publicPath: 'http://localhost:3000/dist/',
+        path: path.join(__dirname, "dist"),
+        publicPath: '/static',
         filename: '[name]'
     },
     module: {
+        noParse: [/vue\.runtime\.min/, /vue-router\.min/, /react\.min/, /react-dom\.min/],
+        resolveLoader: {
+            root: path.join(__dirname, "node_modules")
+        },
         loaders: [{
             test: /\.vue$/,
             loader: 'vue',
@@ -59,6 +63,12 @@ module.exports = {
     devtool: '#eval-source-map',
     resolve: {
         extensions: ['', '.js', '.scss', '.vue'],
+        alias: {
+            'vue': path.resolve(__dirname, 'node_modules/vue/dist/vue.runtime.min'),
+            'vue-router': path.resolve(__dirname, 'node_modules/vue-router/dist/vue-router.min'),
+            'react': path.resolve(__dirname, 'node_modules/react/dist/react.min'),
+            'react-dom': path.resolve(__dirname, 'node_modules/react-dom/dist/react-dom.min'),
+        }
     },
     plugins: [
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -73,8 +83,12 @@ module.exports = {
             filename: 'templates/editor.html',
             template: './templates/editor.ejs',
             inject: false
-        })
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            mangle: true,
+            compress: {
+                warnings: false,
+            },
+        }),
     ]
 };
-
-

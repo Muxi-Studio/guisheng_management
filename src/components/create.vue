@@ -48,22 +48,6 @@
 				</el-tag>
 			</el-form-item>
 			<el-form-item>
-		        <el-upload
-		        		v-if="config.images"
-		                action="http://120.24.4.254:7777/guisheng/upload_pics/"
-		                type="drag"
-		                :multiple = "this.id===2?true:false"
-		                :thumbnail-mode="true"
-		                :on-success="handleSuccess"
-		                :on-preview="handlePreview"
-		                :on-remove="handleRemove"
-		                :on-error="handleError">
-		            <i class="el-icon-upload"></i>
-		            <div class="el-dragger__text">将文件拖到此处，或<em>点击上传</em></div>
-		            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-	        	</el-upload>
-	        </el-form-item>
-			<el-form-item>
 				<el-button type="primary"  v-show="!modify" @click="handleSubmit">立即创建</el-button>
 				<el-button type="primary"  v-show="modify" @click="handleSubmit">修改</el-button>
 				<el-button @click="handleReset">重置</el-button>
