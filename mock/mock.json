@@ -2,7 +2,7 @@
 	"routes": [
 		{
 			"name" : "home",
-			"endpoint": "/",
+			"endpoint": "/admin",
 			"template": "home",
 			"async": false
 		},
@@ -14,7 +14,7 @@
 		},
 		{
 			"name": "editor",
-			"endpoint": "/editor/:kind/:id",
+			"endpoint": "/admin/editor/:kind/:id",
 			"template": "editor",
 			"async": false
 		},

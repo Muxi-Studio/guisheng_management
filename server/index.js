@@ -11,13 +11,13 @@ const templateRoot = path.join(__dirname, "../dist/templates")
 
 app.use(userAgent);
 
-router.get('/', function(ctx, next){
+router.get('/admin', function(ctx, next){
 	console.log(ctx.userAgent)
     let template = swig.compileFile(path.resolve(templateRoot, "home.html"));
         ctx.body = template({})
 });
 
-router.get('/editor/:kind/:id', function(ctx, next){
+router.get('/admin/editor/:kind/:id', function(ctx, next){
 	console.log(ctx.userAgent)
     let template = swig.compileFile(path.resolve(templateRoot, "editor.html"));
         ctx.body = template({})
