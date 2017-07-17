@@ -24,7 +24,7 @@ router.get('/admin/editor/:kind/:id', function(ctx, next){
 });
 
 
-router.get(/^\/static(?:\/|$)/, async (ctx) => {
+router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
     let filePath = ctx.path.replace(/static\//, "")
      await send(ctx, filePath, {
          root: path.join(__dirname, "../dist")
