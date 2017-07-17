@@ -103,7 +103,7 @@ const Pics_Modify = Vue.extend({
 
 export default {
     routes: [
-        { path: '/admin', component: Home },
+        { path: '/', component: Home },
         { path: '/pics',component:Pics,
             children: [
               {
