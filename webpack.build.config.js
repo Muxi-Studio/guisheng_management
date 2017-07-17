@@ -15,7 +15,7 @@ module.exports = {
         filename: '[name]'
     },
     module: {
-        noParse: [/vue\.runtime\.min/, /vue-router\.min/, /react\.min/, /react-dom\.min/],
+        noParse: [/vue\.runtime\.min/, /vue-router\.min/, /react\.min/],
         resolveLoader: {
             root: path.join(__dirname, "node_modules")
         },
