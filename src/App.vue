@@ -1,11 +1,16 @@
 <template>
 	<div class="app">
-		<header class="header"></header>
+		<header class="header">
+			<div class="content">
+				<a class="title">华大桂声管理后台</a>
+				<a href="https://user.muxixyz.com/?landing=localhost:3000/admin" class="login">登录</a>
+			</div>
+		</header>
 		<div class="container">
 			<el-row> 
 				<el-col :span="6">
 					<div class="side">
-						<el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true" default-active="1">
+						<el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true" default-active="1" :unique-opened="true">
 					 		<el-submenu index="/news">
 					    		<template slot="title">新闻</template>
 								<el-menu-item index="/news/create">新建</el-menu-item>
@@ -70,10 +75,29 @@
 	height: 80px;
 	width: 100%;
 	background-color: rgb(32, 160, 255);
+	.content{
+		margin:0px 50px;
+		a{
+			line-height:80px;
+			color:white;
+		}
+		.title{
+			font-size:30px;
+		}
+		.login{
+			font-size: 16px;
+			float:right;
+			text-decoration: none;
+		}
+	}
+}
+.fixed{
+	position:fixed;
 }
 .container{
 	min-height: 100%;
-	padding-top: 80px;
+	margin-bottom:80px;
+	padding-top: 120px;
 	box-sizing: border-box;
 }
 .side{
@@ -83,6 +107,16 @@
 
 <script>
   export default {
+  	created(){
+  		if(!window.location.search){
+	        this.$notify({
+	          	title: '请先登录',
+	          	message: '点击登录按钮前往木犀通行证页面',
+	          	type: 'warning',
+	          	offset: 50
+	        })
+  		}
+  	},
     methods: {
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
@@ -92,7 +126,7 @@
       },
       push(){
       	console.log("hah");
-      }
+      },
     }
   }
 </script>

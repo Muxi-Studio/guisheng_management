@@ -3,11 +3,13 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: {
         'main.js': ['./src/main.js'],
-        'editor.js': ['./src/editor.js']
+        'editor.js': ['./src/editor.js'],
+        vendor: ["vue","vue-router",'element-ui/lib/theme-default/index.css']
     },
     output: {
         path: path.join(__dirname, "dist"),
@@ -68,9 +70,11 @@ module.exports = {
             'vue-router': path.resolve(__dirname, 'node_modules/vue-router/dist/vue-router.min'),
             'react': path.resolve(__dirname, 'node_modules/react/dist/react.min'),
             'react-dom': path.resolve(__dirname, 'node_modules/react-dom/dist/react-dom.min'),
+            'draft-js': path.resolve(__dirname, 'node_modules/draft-js/dist/Draft.min'),
         }
     },
     plugins: [
+        new BundleAnalyzerPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
@@ -78,7 +82,7 @@ module.exports = {
             filename: 'templates/home.html',
             template: './templates/home.ejs',
             inject: false,
-            chunks: ['main.js']
+            chunks: ['main.js','vendor']
         }),
         new HtmlWebpackPlugin({
             filename: 'templates/editor.html',
@@ -92,5 +96,6 @@ module.exports = {
                 warnings: false,
             },
         }),
+        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js")
     ]
 };

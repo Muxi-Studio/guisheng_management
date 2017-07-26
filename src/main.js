@@ -23,7 +23,8 @@ import {
 	Card,
 	Tag,
 	Popover,
-	DatePicker
+	DatePicker,
+	Notification,
         } from 'element-ui'
 import './scss/reset.scss'
 import 'element-ui/lib/theme-default/index.css'
@@ -51,6 +52,7 @@ Vue.use(Tag)
 Vue.use(Popover)
 Vue.use(DatePicker)
 
+Vue.prototype.$notify = Notification;
 
 
 

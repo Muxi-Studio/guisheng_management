@@ -221,7 +221,7 @@ import config from "../common/consts.js"
         if(this.url === '/pics'){
           this.$router.push({name:'/pics/editor/',params:{id:row.article_id}})
         }else{
-          window.location = `/editor${this.url}/${row.article_id}`
+          window.location = `/admin/editor${this.url}/${row.article_id}`
         }
       },
       handleDelete(index, row) {
