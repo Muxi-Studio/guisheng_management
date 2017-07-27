@@ -1,3 +1,5 @@
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import routes from './router-config'
 import App from './App.vue'
 import { 
@@ -25,6 +27,7 @@ import {
 	Notification,
         } from 'element-ui'
 import './scss/reset.scss'
+import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(VueRouter)
 Vue.use(Button)
