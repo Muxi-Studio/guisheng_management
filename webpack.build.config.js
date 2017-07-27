@@ -3,13 +3,14 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: {
         'main.js': ['./src/main.js'],
         'editor.js': ['./src/editor.js'],
-        vendor: ["vue","vue-router",'element-ui/lib/theme-default/index.css']
+        'vue-ele.js': ['vue','vue-router','element-ui/lib/theme-default/index.css'],
+        'reactBundle.js': ['react','react-dom']
     },
     output: {
         path: path.join(__dirname, "dist"),
@@ -74,6 +75,34 @@ module.exports = {
         }
     },
     plugins: [
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor',
+        //     minChunks: function(module, count) {
+        //         // any required modules inside node_modules are extracted to vendor
+        //         return (
+        //             module.resource &&
+        //             /\.js$/.test(module.resource) &&
+        //             module.resource.indexOf(
+        //                 path.join(__dirname, '../node_modules')
+        //             ) === 0
+        //         )
+        //     }
+        // }),
+        //extract webpack runtime and module manifest to its own file in order to
+        //prevent vendor hash from being updated whenever app bundle is updated
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'manifest',
+        //     chunks: ['vendor']
+        // }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vueEle',
+            chunks: ['vue-ele.js']
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'reactBundle',
+            chunks: ['reactBundle.js']
+        }),
+        new BundleAnalyzerPlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
@@ -81,13 +110,13 @@ module.exports = {
             filename: 'templates/home.html',
             template: './templates/home.ejs',
             inject: false,
-            chunks: ['main.js','vendor']
+            chunks: ['vueEle','main.js']
         }),
         new HtmlWebpackPlugin({
             filename: 'templates/editor.html',
             template: './templates/editor.ejs',
             inject: false,
-            chunks: ['editor.js']
+            chunks: ['reactBundle','editor.js']
         }),
         new webpack.optimize.UglifyJsPlugin({
             mangle: true,
@@ -95,6 +124,6 @@ module.exports = {
                 warnings: false,
             },
         }),
-        new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js")
+        // new webpack.optimize.CommonsChunkPlugin("vendor", "vendor.js")
     ]
 };
