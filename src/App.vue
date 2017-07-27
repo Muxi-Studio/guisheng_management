@@ -3,7 +3,7 @@
 		<header class="header">
 			<div class="content">
 				<a class="title">华大桂声管理后台</a>
-				<a href="https://user.muxixyz.com/?landing=localhost:3000/admin" class="login">登录</a>
+				<a href="https://user.muxixyz.com/?landing=120.24.4.254:8777/admin" class="login">登录</a>
 			</div>
 		</header>
 		<div class="container">
@@ -108,8 +108,10 @@
 <script>
   export default {
   	created(){
-  		if(!window.location.search){
-	        this.$notify({
+  		if(window.location.search){
+
+  		}else{
+  			this.$notify({
 	          	title: '请先登录',
 	          	message: '点击登录按钮前往木犀通行证页面',
 	          	type: 'warning',
