@@ -15,7 +15,7 @@ module.exports = {
     entry: {
         main: './src/main.js',
         editor: './src/editor.js',
-        vue:['vue','vue-router'],
+        vue:['vue','vue-router','element-ui/lib/theme-default/index.css'],
         react: ['react','react-dom']
     },
     output: {
@@ -82,12 +82,12 @@ module.exports = {
             chunks: ['vendor']
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vue',
-            chunks: ['vue']
+            name: 'vueCommon',
+            chunks: ['vue','main']
         }),
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'react',
-            chunks: ['react']
+            name: 'reactCommon',
+            chunks: ['react','editor']
         }),
         new webpack.DefinePlugin({
             'process.env': {
@@ -98,35 +98,14 @@ module.exports = {
             filename: 'templates/home.html',
             template: './templates/home.ejs',
             inject: false,
-            chunks:['main','vue']
+            chunks:['manifest','vendor','vueCommon','main']
         }),
         new HtmlWebpackPlugin({
             filename: 'templates/editor.html',
             template: './templates/editor.ejs',
             inject: false,
-            chunks:['editor','react']
+            chunks:['manifest','vendor','reactCommon','editor']
         }),
-        // new HtmlWebpackPlugin({
-        //     alwaysWriteToDisk: true,
-        //     filename: 'template/base.html',
-        //     inject: false,
-        //     template: path.join(__dirname, '../template/base.ejs'),
-        //     chunks: ['manifest','vendor']
-        // }),
-        // new HtmlWebpackPlugin({
-        //     alwaysWriteToDisk: true,
-        //     filename: 'template/index.html',
-        //     inject: false,
-        //     template: path.join(__dirname, '../template/index.ejs'),
-        //     chunks: ['index']
-        // }),
-        // new HtmlWebpackPlugin({
-        //     alwaysWriteToDisk: true,
-        //     filename: 'template/second.html',
-        //     inject: false,
-        //     template: path.join(__dirname, '../template/second.ejs'),
-        //     chunks: ['second']
-        // }),
         new HtmlWebpackHarddiskPlugin()
     ]
 }
