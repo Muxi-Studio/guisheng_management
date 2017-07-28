@@ -38,6 +38,7 @@ module.exports = merge(baseWebpackConfig, {
 // const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const autoprefixer = require('autoprefixer');
+// const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // module.exports = {
@@ -98,19 +99,21 @@ module.exports = merge(baseWebpackConfig, {
 //     },
 //     plugins: [
 //         new BundleAnalyzerPlugin(),
-//         new webpack.optimize.OccurenceOrderPlugin(),
 //         new webpack.HotModuleReplacementPlugin(),
 //         new webpack.NoErrorsPlugin(),
 //         new HtmlWebpackPlugin({
+//             alwaysWriteToDisk: true,
 //             filename: 'templates/home.html',
 //             template: './templates/home.ejs',
 //             inject: false
 //         }),
 //         new HtmlWebpackPlugin({
+//             alwaysWriteToDisk: true,
 //             filename: 'templates/editor.html',
 //             template: './templates/editor.ejs',
 //             inject: false
-//         })
+//         }),
+//         new HtmlWebpackHarddiskPlugin()
 //     ]
 // };
 

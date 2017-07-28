@@ -19,7 +19,7 @@ module.exports = {
         react: ['react','react-dom']
     },
     output: {
-        path: path.join(__dirname, "../"),
+        path: path.join(__dirname, "./"),
         filename: '[name].js',
         publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath
     },
@@ -96,16 +96,16 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
         	alwaysWriteToDisk: true,
-            filename: 'templates/home.html',
-            template: path.join(__dirname, 'templates/home.ejs'),
+            filename: './templates/home.html',            
             inject: false,
+            template: path.join(__dirname, './templates/home.ejs'),
             chunks:['manifest','vendor','vueCommon','main']
         }),
         new HtmlWebpackPlugin({
         	alwaysWriteToDisk: true,
-            filename: 'templates/editor.html',
-            ttemplate: path.join(__dirname, 'templates/editor.ejs'),
+            filename: './templates/editor.html',
             inject: false,
+            ttemplate: path.join(__dirname, './templates/editor.ejs'),
             chunks:['manifest','vendor','reactCommon','editor']
         }),
         new HtmlWebpackHarddiskPlugin()
