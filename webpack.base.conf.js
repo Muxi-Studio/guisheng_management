@@ -95,14 +95,16 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
+        	alwaysWriteToDisk: true,
             filename: 'templates/home.html',
-            template: './templates/home.ejs',
+            template: path.join(__dirname, 'templates/home.ejs'),
             inject: false,
             chunks:['manifest','vendor','vueCommon','main']
         }),
         new HtmlWebpackPlugin({
+        	alwaysWriteToDisk: true,
             filename: 'templates/editor.html',
-            template: './templates/editor.ejs',
+            ttemplate: path.join(__dirname, 'templates/editor.ejs'),
             inject: false,
             chunks:['manifest','vendor','reactCommon','editor']
         }),
