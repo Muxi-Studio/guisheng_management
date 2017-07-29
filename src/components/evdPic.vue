@@ -43,9 +43,10 @@
 				create:{
 					img_url:'',
 		  			climate:1,
-		  			date:''
+		  			date:'',
 				},
-				pic:{}
+				pic:{},
+				formatdate:''
   			}
 		},
 		created(){
@@ -53,6 +54,7 @@
 		},
 		methods:{
 			handleSubmit(){
+				this.create.date = `${this.create.date.getMonth() + 1}/${this.create.date.getDate()}`
 		  		fetch(`/api/v1.0/everydaypic/`, {
 	                method: 'POST',
 	                headers: {

@@ -14,16 +14,12 @@
 					 		<el-submenu index="/news">
 					    		<template slot="title">新闻</template>
 								<el-menu-item index="/news/create">新建</el-menu-item>
-					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/news/list">查看列表</el-menu-item>
-					    		</el-menu-item-group>
+					    		<el-menu-item index="/news/list">查看列表</el-menu-item>
 					  		</el-submenu>
 					  		<el-submenu index="/pics">
 					    		<template slot="title">图片</template>
 								<el-menu-item index="/pics/create">新建</el-menu-item>
-					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/pics/list">查看列表</el-menu-item>
-					    		</el-menu-item-group>
+					    		<el-menu-item index="/pics/list">查看列表</el-menu-item>
 					  		</el-submenu>
 					  		<el-submenu index="/articles">
 					    		<template slot="title">水墨</template>
@@ -48,6 +44,11 @@
 					    			<el-menu-item index="/interaction/list/tea">喝茶吧列表</el-menu-item>
 					    			<el-menu-item index="/interaction/list/topic">话题列表</el-menu-item>
 					    		</el-menu-item-group>
+					  		</el-submenu>
+					 		<el-submenu index="/special">
+					    		<template slot="title">专题</template>
+								<el-menu-item index="/special/create">新建</el-menu-item>
+					    		<el-menu-item index="/special/list">查看列表</el-menu-item>
 					  		</el-submenu>
 							<el-menu-item index="/everydaypic">每日一图</el-menu-item>
 							<el-menu-item index="/user">用户管理</el-menu-item>

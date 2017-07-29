@@ -7,6 +7,10 @@ import evdPic from './components/evdPic'
 import Comment from './components/comment'
 import User from './components/userlist'
 
+import SpecialCre from './components/special'
+import SpecialList from './components/special_list'
+// import ChildContent from './components/child_content'
+
 //home
 const Pics = Vue.extend({
     name:"Pics",
@@ -22,6 +26,10 @@ const Article = Vue.extend({
 })
 const Interaction = Vue.extend({
     name:"Interaction",
+    mixins: [Home]
+})
+const Special = Vue.extend({
+    name:"Special",
     mixins: [Home]
 })
 const Edit = Vue.extend({
@@ -99,6 +107,16 @@ const Modify = Vue.extend({
 const Pics_Modify = Vue.extend({
     name:"Pics_Modify",
     mixins: [PicList]
+})
+
+const ChildSpecial = Vue.extend({
+    name:"ChildSpecialList",
+    mixins: [SpecialList]
+})
+
+const ChildContent = Vue.extend({
+    name:"ChildContent",
+    mixins: [List]
 })
 
 export default {
@@ -229,6 +247,26 @@ export default {
                 path:'comments/:id',
                 name:'/interaction/comment',
                 component: Comment
+              }
+            ]
+        },
+        { path: '/special',
+            component: Home,
+            children: [
+              {
+                path: 'create',
+                component: SpecialCre
+              },{
+                path: 'list',
+                component: SpecialList
+              },{
+                name:'/Special',
+                path: 'list/:id',
+                component: ChildSpecial
+              },{
+                name:'childContent',
+                path:'list/:id/:cid',
+                component: ChildContent
               }
             ]
         },{ 

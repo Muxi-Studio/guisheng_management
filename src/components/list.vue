@@ -57,6 +57,11 @@
       width="100">
     </el-table-column>
     <el-table-column
+      prop="count"
+      label="赞数"
+      width="100">
+    </el-table-column>
+    <el-table-column
       fixed="right"
       width="250"
       :context="_self"
