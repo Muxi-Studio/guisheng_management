@@ -128,16 +128,20 @@ import config from "../common/consts.js"
 		},
 		created(){
       this.url = this.$route.matched[0].path
-      this.path = config.list[this.$route.matched[0].path]
-      this.subroute = this.$route.matched[1].path
-      console.log(this.subroute)
-      sub = config.list[this.subroute]
-      if(this.path == 3||this.path == 4){
-        route = `${this.path}&flag=${sub}`
+      if(this.url === '/special'){
+        this.updateSpecialCnt()
       }else{
-        route = this.path
+        this.path = config.list[this.$route.matched[0].path]
+        this.subroute = this.$route.matched[1].path
+        // console.log(this.subroute)
+        sub = config.list[this.subroute]
+        if(this.path == 3||this.path == 4){
+          route = `${this.path}&flag=${sub}`
+        }else{
+          route = this.path
+        }
+        this.updateCnt()
       }
-      this.updateCnt()
 		},
   	methods:{
       updateCnt(){
@@ -172,6 +176,24 @@ import config from "../common/consts.js"
           })
         }
         })
+      },
+      updateSpecialCnt(){
+        fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=1`,{
+          headers: {
+            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+        })
+      .then( (res) => {
+        return res.json()
+      }).then( value => {
+        this.tableData = value
+        console.log(this.tableData)
+        if(value[0]){
+          this.count = value[0].count
+        }
+        })        
       },
       handleComment(index, row){
         this.$router.push({name:`${this.url}/comment`,params: { id:row.article_id }})

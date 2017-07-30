@@ -154,6 +154,12 @@ var route = ""
       },
       checklist(index, row){
         this.$router.push({name:"childContent", params:{id:this.$route.params.id,cid:row.id}})
+      },
+      addArticle(index, row){
+        this.$router.push({name:"childAddArticle", params:{id:this.$route.params.id,cid:row.id}})
+      },
+      addPics(index, row){
+        this.$router.push({name:"childAddPics", params:{id:this.$route.params.id,cid:row.id}})
       }
     },
   }

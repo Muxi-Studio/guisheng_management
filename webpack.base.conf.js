@@ -3,7 +3,7 @@ var config = require('./config')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 var webpack = require('webpack')
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 process.noDeprecation = true
 
@@ -60,7 +60,7 @@ module.exports = {
         }]
     },
     plugins: [
-    	new BundleAnalyzerPlugin(),
+    	// new BundleAnalyzerPlugin(),
         // split vendor js into its own file
    //      new webpack.optimize.CommonsChunkPlugin({
    //          name: 'vue-vendor',

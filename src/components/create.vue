@@ -16,7 +16,7 @@
 			<el-form-item label="添加标签" prop="moretag">
 				<el-input v-model="moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
 			</el-form-item>
-			<el-form-item label="图片url" prop="img_url" v-if="config.images">
+			<el-form-item label="图片url" prop="img_url">
 				<el-input v-model="create.img_url"></el-input>
 			</el-form-item>
 			<el-form-item label="音乐URL" prop="music_url" v-if="config.music_img_url">
@@ -168,10 +168,15 @@ import 'whatwg-fetch'
 					  			}
 					  		}
 				  		}
-				  		if(this.modify) {
-				  			this.route = `/api/v1.0${this.url}/${this.id}/`
+				  		if(this.url === '/special'){
+				  			let result = /\/article$/.test(this.$route.path)?'article':'picture'
+				  				this.route = `/api/v1.0/special/${this.$route.params.id}/${this.$route.params.cid}/${result}/`
 				  		}else{
-				  			this.route = `/api/v1.0${this.url}/`
+					  		if(this.modify) {
+					  			this.route = `/api/v1.0${this.url}/${this.id}/`
+					  		}else{
+					  			this.route = `/api/v1.0${this.url}/`
+					  		}
 				  		}
 				  		console.log(result)
 				  		fetch(this.route, {

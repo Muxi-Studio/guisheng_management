@@ -119,6 +119,16 @@ const ChildContent = Vue.extend({
     mixins: [List]
 })
 
+const ChildAddArticle = Vue.extend({
+    name:"ChildAddArticle",
+    mixins: [Create]
+})
+
+const ChildAddPics = Vue.extend({
+    name:"ChildAddPics",
+    mixins: [Create]
+})
+
 export default {
     routes: [
         { path: '/', component: Home },
@@ -267,6 +277,15 @@ export default {
                 name:'childContent',
                 path:'list/:id/:cid',
                 component: ChildContent
+              },{
+                name:'childAddArticle',
+                path:'child/:id/:cid/article',
+                component: ChildAddArticle
+              },
+              {
+                name:'childAddPics',
+                path:'child/:id/:cid/picture',
+                component: ChildAddPics
               }
             ]
         },{ 
