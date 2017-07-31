@@ -15,6 +15,17 @@
       </el-tag>
     </el-table-column>
     <el-table-column
+      v-if="url === '/special'"
+      prop="kind"
+      label="类别"
+      width="120"
+      :filters="[{ text: '文章', value: 1 }, { text: '图集', value: 2 }]" 
+      :filter-method="filterKind" inline-template>
+      <el-tag :type="row.kind === 1 ? 'primary' : 'success'" close-transition>
+        {{row.kind === 1 ? '文章':'图集'}}
+      </el-tag>
+    </el-table-column>
+    <el-table-column
       prop="time"
       label="编辑时间"
       width="120">
@@ -57,13 +68,13 @@
       width="100">
     </el-table-column>
     <el-table-column
-      prop="count"
+      prop="likes"
       label="赞数"
       width="100">
     </el-table-column>
     <el-table-column
       fixed="right"
-      width="250"
+      width="280"
       :context="_self"
       inline-template
       label="操作">
@@ -83,10 +94,10 @@
           type="text">
           操作
           <template scope="scope">
-            <el-popover trigger="hover" placement="top">
+            <el-popover trigger="click" placement="top">
                 <el-button type="primary" size="small" v-if="row.published" @click="handleUnPublish($index,row)">取消发布</el-button>
                 <el-button type="primary" size="small" v-if="!row.published" @click="handlePublish($index,row)">发布</el-button>
-                 <el-button type="primary" size="small" @click="handleComment($index, row)">查看评论</el-button>
+                 <el-button type="primary" size="small" @click="handleComment($index, row)" v-if="!specialFlag">查看评论</el-button>
                 <span v-if="subroute=='/interaction/list/tea'">
                   <el-button type="primary" size="small" v-if="row.published &&!row.tea" @click="handlePop($index,row)">置顶</el-button>
                 </span>
@@ -123,12 +134,13 @@ import config from "../common/consts.js"
         path: 0,
         count: 0,
         url:'',
-        subroute:''
+        specialFlag:false
 			}
 		},
 		created(){
       this.url = this.$route.matched[0].path
       if(this.url === '/special'){
+        this.specialFlag = true
         this.updateSpecialCnt()
       }else{
         this.path = config.list[this.$route.matched[0].path]
@@ -202,7 +214,12 @@ import config from "../common/consts.js"
         if(sub){
           this.$router.push({name:`${this.url}/${sub}`,params: { aid:row.article_id }})
         }else{
-          this.$router.push({name:this.url,params: { aid:row.article_id }})
+          if(this.tableData && this.specialFlag){
+            console.log(`${this.url}/${row.kind}`)
+            this.$router.push({name:`${this.url}/${row.kind}`,params: { aid:row.article_id }})
+          }else{
+            this.$router.push({name:this.url,params: { aid:row.article_id }})
+          }
         }
       },
       handlePop(index,row){
@@ -228,7 +245,11 @@ import config from "../common/consts.js"
             },
             body: JSON.stringify({kind:row.kind,post_id:row.article_id})
         }).then(value =>{
-          this.updateCnt()
+          if(this.specialFlag){
+            this.updateSpecialCnt()
+          }else{
+            this.updateCnt()
+          }
         })        
       },
       handlePublish(index,row){
@@ -241,18 +262,35 @@ import config from "../common/consts.js"
             },
             body: JSON.stringify({kind:row.kind,post_id:row.article_id})
         }).then(value =>{
-          this.updateCnt()
+          if(this.specialFlag){
+            this.updateSpecialCnt()
+          }else{
+            this.updateCnt()
+          }
         })  
       },
       handleEditBody(index, row){
-        if(this.url === '/pics'){
+        let location = ''
+        if(this.specialFlag){
+          location = (row.kind === 1?'/news':'/pics')
+        }
+        if(this.url === '/pics' || location === '/pics'){
           this.$router.push({name:'/pics/editor/',params:{id:row.article_id}})
         }else{
-          window.location = `/admin/editor${this.url}/${row.article_id}`
+          if(!location){
+            location = this.url
+          }
+          window.location = `/admin/editor${location}/${row.article_id}`
         }
       },
       handleDelete(index, row) {
-        fetch(`/api/v1.0${this.url}/${row.article_id}/`, {
+        let locate = ''
+        if(this.specialFlag){
+          locate = (row.kind === 1?'/news':'/pics')
+        }else{
+          locate = this.url
+        }
+        fetch(`/api/v1.0${locate}/${row.article_id}/`, {
             method: 'DELETE',
             headers: {
             'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
@@ -262,8 +300,11 @@ import config from "../common/consts.js"
         }).then((res) =>{
           return res.json()
         }).then(value =>{
-          console.log(value)
-          this.updateCnt()
+          if(this.specialFlag){
+            this.updateSpecialCnt()
+          }else{
+            this.updateCnt()
+          }
         })
         // fetch(`/api/v1.0/feed/?page=${this.currentPage}&count=10&kind=1`)
         //   .then( (res) => {
@@ -279,8 +320,25 @@ import config from "../common/consts.js"
       filterTag(value, row) {
         return row.published === value;
       },
+      filterKind(value, row) {
+        return row.kind === value;
+      },
       handleCurrentChange(val) {
           this.currentPage = val;
+          if (this.specialFlag) {
+            fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=1`,{
+              headers: {
+                'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+            })
+          .then( (res) => {
+            return res.json()
+          }).then( value => {
+            this.tableData = value            
+          })
+        }else{
           fetch(`/api/v1.0/list/?page=${val}&count=10&kind=${route}`,{
             headers: {
               'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
@@ -294,6 +352,7 @@ import config from "../common/consts.js"
             this.tableData = value
           })
         }
-  		}
+  	  }
+    }
 	}
 </script>

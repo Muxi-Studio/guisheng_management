@@ -7,8 +7,7 @@
 			</div>
 		</header>
 		<div class="container">
-			<el-row> 
-				<el-col :span="6">
+				<div class="menu">
 					<div class="side">
 						<el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :router="true" default-active="1" :unique-opened="true">
 					 		<el-submenu index="/news">
@@ -24,12 +23,12 @@
 					  		<el-submenu index="/articles">
 					    		<template slot="title">水墨</template>
 					    		<el-menu-item-group title="新建">
-					    			<el-menu-item index="/article/pics">图片</el-menu-item>
+					    			<el-menu-item index="/article/pics">文章</el-menu-item>
 					    			<el-menu-item index="/article/movies">电影</el-menu-item>
 					      			<el-menu-item index="/article/music">音乐</el-menu-item>
 					    		</el-menu-item-group>
 					    		<el-menu-item-group title="列表">
-					    			<el-menu-item index="/article/list/pics">图片列表</el-menu-item>
+					    			<el-menu-item index="/article/list/pics">文章列表</el-menu-item>
 					    			<el-menu-item index="/article/list/movies">电影列表</el-menu-item>
 					    			<el-menu-item index="/article/list/music">音乐列表</el-menu-item>
 					    		</el-menu-item-group>
@@ -54,13 +53,10 @@
 							<el-menu-item index="/user">用户管理</el-menu-item>
 						</el-menu>
 					</div>
-				</el-col>
-  				<el-col :span="17">
-  					<div class="main">
-						<router-view></router-view>
-					</div>
-  				</el-col>
-			</el-row>
+				</div>
+				<div class="right">
+					<router-view></router-view>
+  				</div>
 		</div>
 	</div>
 </template>
@@ -70,9 +66,10 @@
 	height: 100%;
 }
 .header{
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
+	z-index:40;
 	height: 80px;
 	width: 100%;
 	background-color: rgb(32, 160, 255);
@@ -96,13 +93,22 @@
 	position:fixed;
 }
 .container{
-	min-height: 100%;
-	margin-bottom:80px;
-	padding-top: 120px;
-	box-sizing: border-box;
+	margin-top:120px;
 }
-.side{
-	padding-right: 40px;
+.menu{
+	position:fixed;
+	top:0px;
+	bottom:0px;
+	background-color: #eef1f6;
+	width:260px;
+	margin-top:80px;
+	overflow-y: auto;
+}
+.right{
+	margin-top:40px;
+	margin-left: 320px;
+	margin-bottom:40px;
+	width:70%;
 }
 </style>
 

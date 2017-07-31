@@ -16,7 +16,7 @@
 			<el-form-item label="添加标签" prop="moretag">
 				<el-input v-model="moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
 			</el-form-item>
-			<el-form-item label="图片url" prop="img_url">
+			<el-form-item label="封面图网址" prop="img_url">
 				<el-input v-model="create.img_url"></el-input>
 			</el-form-item>
 			<el-form-item label="音乐URL" prop="music_url" v-if="config.music_img_url">
@@ -56,6 +56,7 @@
 	</div>
 </template>
 <script>
+var specialRoute = ""
 import config from '../common/consts'
 import 'whatwg-fetch'
 	export default{
@@ -101,12 +102,14 @@ import 'whatwg-fetch'
 		},
 		created(){
 			this.geturl()
-			console.log(this.url_kind)
-			console.log(config.list[this.url_kind])
 		},
   		methods:{
   			geturl(){
   				this.url = this.$route.matched[0].path
+  				if(this.url === '/special'){
+  					console.log(this.$route.path)
+				  	specialRoute =  /\/article/.test(this.$route.path)?'article':'picture'
+				}
   				var reg
   				if(this.url === '/article'){
   					reg = new RegExp('\/article\/([a-z]+)\/')
@@ -123,8 +126,11 @@ import 'whatwg-fetch'
   					this.config = config.category[this.url_kind]
   				}
   				if(this.modify){
-  				  this.id = this.$route.params.aid 
-		          fetch(`/api/v1.0${this.url}/${this.id}/`,{
+  				    this.id = this.$route.params.aid
+  				    if(this.url === '/special'){
+  				    	this.url = (specialRoute === 'article'?'/news':'/pics')
+  				    }
+		            fetch(`/api/v1.0${this.url}/${this.id}/`,{
 		                method: 'GET',
 		                headers: {
 		                	'Accept': 'application/json',
@@ -168,12 +174,18 @@ import 'whatwg-fetch'
 					  			}
 					  		}
 				  		}
-				  		if(this.url === '/special'){
-				  			let result = /\/article$/.test(this.$route.path)?'article':'picture'
-				  				this.route = `/api/v1.0/special/${this.$route.params.id}/${this.$route.params.cid}/${result}/`
+
+				  		if(this.modify) {
+				  			if(specialRoute === 'article'){
+				  				this.route = `/api/v1.0/news/${this.$route.params.aid}`
+				  			}else if(specialRoute === 'picture'){
+				  				this.route = `/api/v1.0/pics/${this.$route.params.aid}`
+				  			}else{
+				  				this.route = `/api/v1.0${this.url}/${this.id}/`
+				  			}
 				  		}else{
-					  		if(this.modify) {
-					  			this.route = `/api/v1.0${this.url}/${this.id}/`
+					  		if(this.url === '/special'){
+					  			this.route = `/api/v1.0/special/${this.$route.params.id}/${this.$route.params.cid}/${specialRoute}/`
 					  		}else{
 					  			this.route = `/api/v1.0${this.url}/`
 					  		}

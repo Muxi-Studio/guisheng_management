@@ -4,9 +4,9 @@
 			<el-form-item label="专题名字" prop="special_name">
 				<el-input v-model="create.special_name"></el-input>
 			</el-form-item>
-			<el-form-item label="专题描述" prop="description">
+<!-- 			<el-form-item label="专题描述" prop="description">
 				<el-input type="textarea" v-model="create.description"></el-input>
-			</el-form-item>
+			</el-form-item> -->
 			<el-form-item>
 				<el-button type="primary"  @click="handleSubmit">立即创建</el-button>
 				<el-button @click="handleReset">重置</el-button>
@@ -22,7 +22,7 @@ import 'whatwg-fetch'
 			return {
 				create: {
 					special_name:"",
-					description:""
+					// description:""
         		},
         		rules:{
         			special_name:[
@@ -39,6 +39,7 @@ import 'whatwg-fetch'
 				this.$refs.create.resetFields();
 			},
 			handleSubmit(ev) {
+				console.log(this.create)
 				this.$refs.create.validate((valid) => {
 			  		fetch('/api/v1.0/special/', {
 	                    method: 'POST',

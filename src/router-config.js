@@ -286,6 +286,15 @@ export default {
                 name:'childAddPics',
                 path:'child/:id/:cid/picture',
                 component: ChildAddPics
+              },{
+                path:'article/edit/:aid',
+                name:'/special/1',
+                component:Modify
+              },
+              {
+                path:'pics/edit/:aid',
+                name:'/special/2',
+                component:Modify
               }
             ]
         },{ 

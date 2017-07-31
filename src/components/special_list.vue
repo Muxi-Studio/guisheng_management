@@ -6,15 +6,16 @@
     style="width: 100%"
     height="250">
     <el-table-column
+      v-if="specialist"
       prop="special_name"
       label="专题名称"
       min-width="80">
     </el-table-column>
     <el-table-column
-      v-if="specialist"
-      prop="description"
+      v-if="!specialist"
+      prop="childtopic_name"
       min-width="200"
-      label="描述">
+      label="话题名称">
     </el-table-column>
     <el-table-column
       prop="id"
@@ -32,8 +33,8 @@
           type="text">
           添加话题
           <template scope="scope">
-            <el-popover trigger="hover" placement="top">
-              <el-input placeholder="请输入内容" v-model="input" ref="childname">
+            <el-popover trigger="click" placement="top">
+              <el-input placeholder="请输入内容" v-model="row.input">
                 <el-button slot="append" icon="plus" @click="addChild($index,row)"></el-button>
               </el-input>
               <div slot="reference" class="name-wrapper">
@@ -143,10 +144,10 @@ var route = ""
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({childtopic_name:this.$refs.childname.currentValue})
+            body: JSON.stringify({childtopic_name:row.input})
         }).then(value =>{
           this.updateCnt()
-          this.childtopic = ""
+          row.input = ""
         }) 
       },
       handleChild(index,row){

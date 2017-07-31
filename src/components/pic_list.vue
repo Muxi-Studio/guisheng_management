@@ -5,7 +5,7 @@
     {{this.content.title}} - by {{ this.content.author}}
     </el-col>
     <el-col :span="4">
-      <el-button type="text" class="button" @click="addPic">添加图片</el-button>
+      <el-button type="text" class="button" size="large" @click="addPic">添加图片</el-button>
     </el-col>
   </el-row>
   <el-row v-show="upload">
