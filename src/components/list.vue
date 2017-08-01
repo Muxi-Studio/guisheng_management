@@ -97,7 +97,7 @@
             <el-popover trigger="click" placement="top">
                 <el-button type="primary" size="small" v-if="row.published" @click="handleUnPublish($index,row)">取消发布</el-button>
                 <el-button type="primary" size="small" v-if="!row.published" @click="handlePublish($index,row)">发布</el-button>
-                 <el-button type="primary" size="small" @click="handleComment($index, row)" v-if="!specialFlag">查看评论</el-button>
+                 <el-button type="primary" size="small" @click="handleComment($index, row)">查看评论</el-button>
                 <span v-if="subroute=='/interaction/list/tea'">
                   <el-button type="primary" size="small" v-if="row.published &&!row.tea" @click="handlePop($index,row)">置顶</el-button>
                 </span>
@@ -208,6 +208,10 @@ import config from "../common/consts.js"
         })        
       },
       handleComment(index, row){
+        let cmnlocate = ''
+        if(this.specialFlag){
+          cmnlocate = (row.kind === 1?'/news':'/pics')
+        }
         this.$router.push({name:`${this.url}/comment`,params: { id:row.article_id }})
       },
       handleEdit(index, row) {

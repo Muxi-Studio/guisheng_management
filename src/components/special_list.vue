@@ -3,8 +3,7 @@
   <el-table
     :data="table"
     border
-    style="width: 100%"
-    height="250">
+    style="width: 100%">
     <el-table-column
       v-if="specialist"
       prop="special_name"
@@ -117,8 +116,10 @@ var route = ""
         .then( (res) => {
           return res.json()
         }).then( value => {
-          this.table = value
-          this.count = 2
+          if(value.length >0){
+            this.table = value
+            this.count = value[0].count
+          }
         })
       },
       handleCurrentChange(val) {

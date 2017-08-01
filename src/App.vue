@@ -3,7 +3,7 @@
 		<header class="header">
 			<div class="content">
 				<a class="title">华大桂声管理后台</a>
-				<a href="https://user.muxixyz.com/?landing=120.24.4.254:8777/admin" class="login">登录</a>
+<!-- 				<a href="https://user.muxixyz.com/?landing=120.24.4.254:8777/admin" class="login">登录</a> -->
 			</div>
 		</header>
 		<div class="container">
@@ -113,18 +113,50 @@
 </style>
 
 <script>
+import Cookie from './cookie.js'
+import FETCH from './fetch.js'
   export default {
-  	created(){
-  		if(window.location.search){
-
-  		}else{
-  			this.$notify({
-	          	title: '请先登录',
-	          	message: '点击登录按钮前往木犀通行证页面',
-	          	type: 'warning',
-	          	offset: 50
-	        })
-  		}
+  	mounted(){
+  		console.log(Cookie.getCookie("token")==='')
+  		if(Cookie.getCookie("token")==='' && window.location.search===''){
+  			window.location.href = "https://user.muxixyz.com/?landing=localhost:3000/admin"
+  		}else if(window.location.search!==''){
+		    var email = window.location.href.split('?')[1].split('=')[1]
+		        fetch("/api/v1.0/login/",{
+		            method: 'POST',
+		            headers: {
+		                'Accept': 'application/json',
+		                'Content-Type': 'application/json'
+		            },
+		            body: JSON.stringify({
+		                email: email,
+		                password:"muxistudio304"
+		            })
+		        }).then(res => {
+		            if(res.ok){
+		                return res.json()
+		            }else{
+		                FETCH.FetchData("/api/v1.0/register/","POST",{
+		                    email: email,
+		                    password:"muxistudio304",
+		                    username: email
+		                }).then(value => {
+		                    FETCH.FetchData("/api/v1.0/login/","POST",{
+		                        email: email,
+		                        password:"muxistudio304",
+		                    }).then(value => {
+		                        Cookie.setCookie("token", value.token)
+		                        Cookie.setCookie("uid", value.uid)
+		                    })
+		            
+		                })
+		            }
+		        }).then( value => {
+		            console.log("不会重复",value)
+		            Cookie.setCookie("token", value.token)
+		            Cookie.setCookie("uid", value.uid)
+		        })
+		    }
   	},
     methods: {
       handleOpen(key, keyPath) {
