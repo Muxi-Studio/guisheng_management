@@ -51,6 +51,11 @@
 					  		</el-submenu>
 							<el-menu-item index="/everydaypic">每日一图</el-menu-item>
 							<el-menu-item index="/user">用户管理</el-menu-item>
+							<el-submenu index="/rank">
+					    		<template slot="title">统计</template>
+								<el-menu-item index="/news/create">新建</el-menu-item>
+					    		<el-menu-item index="/news/list">查看列表</el-menu-item>
+					  		</el-submenu>
 						</el-menu>
 					</div>
 				</div>
