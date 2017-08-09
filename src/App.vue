@@ -132,36 +132,37 @@ export default {
         	}).then(value => {
             	console.log("value = ",value)
             	profile = value
+        	}).then(res =>{
+		        fetch("/api/v1.0/admin/login/",{
+		            method: 'POST',
+		            headers: {
+		                'Accept': 'application/json',
+		                'Content-Type': 'application/json'
+		            },
+		            body: JSON.stringify({
+		                email: email,
+		                password:"muxistudio304"
+		            })
+		        }).then(res => {
+		            if(res.ok){
+		                return res.json()
+		            }else{
+		                FETCH.FetchData("/api/v1.0/admin/register/","POST",{
+		                    email: email,
+		                    password:"muxistudio304",
+		                    username: profile.username
+		                }).then(value => {
+		                    FETCH.FetchData("/api/v1.0/admin/login/","POST",{
+		                        email: email,
+		                        password:"muxistudio304",
+		                    })		            
+		                })
+		            }
+		        }).then( value => {
+		            Cookie.setCookie("token", value.token)
+		            Cookie.setCookie("uid", value.uid)
+		        })
         	})
-	        fetch("/api/v1.0/admin/login/",{
-	            method: 'POST',
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'
-	            },
-	            body: JSON.stringify({
-	                username: email,
-	                password:"muxistudio304"
-	            })
-	        }).then(res => {
-	            if(res.ok){
-	                return res.json()
-	            }else{
-	                FETCH.FetchData("/api/v1.0/admin/register/","POST",{
-	                    email: email,
-	                    password:"muxistudio304",
-	                    username: profile.username
-	                }).then(value => {
-	                    FETCH.FetchData("/api/v1.0/admin/login/","POST",{
-	                        email: email,
-	                        password:"muxistudio304",
-	                    })		            
-	                })
-	            }
-	        }).then( value => {
-	            Cookie.setCookie("token", value.token)
-	            Cookie.setCookie("uid", value.uid)
-	        })
 	    }
   	},
     methods: {
