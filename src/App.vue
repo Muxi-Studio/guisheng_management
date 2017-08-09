@@ -123,45 +123,76 @@ import FETCH from './fetch.js'
 export default {
   	mounted(){
   		if(Cookie.getCookie("token")==='' && window.location.search===''){
-  			window.location.href = "https://user.muxixyz.com/?landing=119.23.35.1:8777/admin"
+  			window.location.href = "https://user.muxixyz.com/?landing=localhost:3000/admin"
   		}else if(window.location.search!==''){
+  			var username = ''
 		    var email = window.location.href.split('?')[1].split('=')[1]
-		    var profile = {}
-		    fetch("https://user.muxixyz.com/api/user/?email=" + email).then(res => {
+		    fetch("https://user.muxixyz.com/api/user/?email=" + email)
+		    .then(res => {
             	return res.json()
         	}).then(value => {
             	console.log("value = ",value)
-            	profile = value
-        	})
-    		fetch("/api/v1.0/admin/login/",{
-	            method: 'POST',
-	            headers: {
-	                'Accept': 'application/json',
-	                'Content-Type': 'application/json'
-	            },
-	            body: JSON.stringify({
-	                email: email,
-	                password:"muxistudio304"
-	            })
-	        }).then(res => {
-	            if(res.ok){
-	                return res.json()
-	            }else{
-	                FETCH.FetchData("/api/v1.0/admin/register/","POST",{
-	                    email: email,
-	                    password:"muxistudio304",
-	                    username: profile.username
-	                }).then(value => {
-	                    FETCH.FetchData("/api/v1.0/admin/login/","POST",{
+            	username = value.username
+            	Cookie.setCookie("token", value.username)
+            	fetch("/api/v1.0/admin/login/",{
+		            method: 'POST',
+		            headers: {
+		                'Accept': 'application/json',
+		                'Content-Type': 'application/json'
+		            },
+		            body: JSON.stringify({
+		                email: email,
+		                password: "muxistudio304"
+		            })
+            	}).then(res =>{
+            		if (res.ok) {
+                		return res.json()
+            		} else {
+	                    FETCH.FetchData("/api/v1.0/admin/register/", "POST", {
 	                        email: email,
-	                        password:"muxistudio304",
-	                    })		            
-	                })
-	            }
-	        }).then( value => {
-	            Cookie.setCookie("token", value.token)
-	            Cookie.setCookie("uid", value.uid)
-	        })
+	                        password: "muxistudio304",
+	                        username: username
+	                    }).then(value => {
+	                        FETCH.FetchData("/api/v1.0/admin/login/", "POST", {
+	                            email: email,
+	                            password: "muxistudio304",
+	                        })
+	                    })
+		            }
+            	}).then(value => {
+            		Cookie.setCookie("token", value.token)
+            		Cookie.setCookie("uid", value.uid)
+        		})
+        	})  
+    		// fetch("/api/v1.0/admin/login/",{
+	     //        method: 'POST',
+	     //        headers: {
+	     //            'Accept': 'application/json',
+	     //            'Content-Type': 'application/json'
+	     //        },
+	     //        body: JSON.stringify({
+	     //            email: email,
+	     //            password:"muxistudio304"
+	     //        })
+	     //    }).then(res => {
+	     //        if(res.ok){
+	     //            return res.json()
+	     //        }else{
+	     //            FETCH.FetchData("/api/v1.0/admin/register/","POST",{
+	     //                email: email,
+	     //                password:"muxistudio304",
+	     //                username: profile.username
+	     //            }).then(value => {
+	     //                FETCH.FetchData("/api/v1.0/admin/login/","POST",{
+	     //                    email: email,
+	     //                    password:"muxistudio304",
+	     //                })		            
+	     //            })
+	     //        }
+	     //    }).then( value => {
+	     //        Cookie.setCookie("token", value.token)
+	     //        Cookie.setCookie("uid", value.uid)
+	     //    })
 	    }
   	},
     methods: {
