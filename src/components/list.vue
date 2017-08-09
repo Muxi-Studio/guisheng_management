@@ -330,7 +330,7 @@ import config from "../common/consts.js"
       handleCurrentChange(val) {
           this.currentPage = val;
           if (this.specialFlag) {
-            fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=1`,{
+            fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=${val}`,{
               headers: {
                 'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
                   'Accept': 'application/json',

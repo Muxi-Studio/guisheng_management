@@ -11,6 +11,9 @@ import SpecialCre from './components/special'
 import SpecialList from './components/special_list'
 // import ChildContent from './components/child_content'
 
+import RankAuthor from './components/rankauthor'
+import RankArticle from './components/rankarticle'
+
 //home
 const Pics = Vue.extend({
     name:"Pics",
@@ -30,6 +33,10 @@ const Interaction = Vue.extend({
 })
 const Special = Vue.extend({
     name:"Special",
+    mixins: [Home]
+})
+const Rank = Vue.extend({
+    name:"Rank",
     mixins: [Home]
 })
 const Edit = Vue.extend({
@@ -128,6 +135,7 @@ const ChildAddPics = Vue.extend({
     name:"ChildAddPics",
     mixins: [Create]
 })
+
 
 export default {
     routes: [
@@ -301,6 +309,18 @@ export default {
           path: '/everydaypic',component:evdPic
         },{
           path: '/user',component:User
+        },{ path: '/rank',component: Rank,
+            children: [
+              {
+                path: 'articles',
+                component: RankArticle
+              },
+              {
+                path: 'authors',
+                component: RankAuthor
+              }
+            ]
         }
+      
     ]
 }
