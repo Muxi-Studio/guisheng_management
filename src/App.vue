@@ -124,7 +124,7 @@ var profile = {}
 export default {
   	mounted(){
   		if(Cookie.getCookie("token")==='' && window.location.search===''){
-  			window.location.href = "https://user.muxixyz.com/?landing=localhost:3000/admin"
+  			window.location.href = "https://user.muxixyz.com/?landing=119.23.35.1/admin"
   		}else if(window.location.search!==''){
 		    var email = window.location.href.split('?')[1].split('=')[1]
 		    fetch("https://user.muxixyz.com/api/user/?email=" + email).then(res => {
