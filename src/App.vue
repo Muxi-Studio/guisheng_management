@@ -120,13 +120,13 @@
 <script>
 import Cookie from './cookie.js'
 import FETCH from './fetch.js'
-var profile = {}
 export default {
   	mounted(){
   		if(Cookie.getCookie("token")==='' && window.location.search===''){
   			window.location.href = "https://user.muxixyz.com/?landing=119.23.35.1:8777/admin"
   		}else if(window.location.search!==''){
 		    var email = window.location.href.split('?')[1].split('=')[1]
+		    var profile = {}
 		    fetch("https://user.muxixyz.com/api/user/?email=" + email).then(res => {
             	return res.json()
         	}).then(value => {
