@@ -50,7 +50,8 @@
 					    		<el-menu-item index="/special/list">查看列表</el-menu-item>
 					  		</el-submenu>
 							<el-menu-item index="/everydaypic">每日一图</el-menu-item>
-							<el-menu-item index="/user">用户管理</el-menu-item>
+							<el-menu-item index="/userlist">用户管理</el-menu-item>
+							<el-menu-item index="/adminlist">权限管理</el-menu-item>
 							<el-submenu index="/rank">
 					    		<template slot="title">统计</template>
 								<el-menu-item index="/rank/articles">内容排名</el-menu-item>

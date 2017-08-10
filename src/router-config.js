@@ -136,6 +136,15 @@ const ChildAddPics = Vue.extend({
     mixins: [Create]
 })
 
+const UserList = Vue.extend({
+  name:"AdminList",
+  mixins: [User]
+})
+
+const AdminList = Vue.extend({
+  name:"AdminList",
+  mixins: [User]
+})
 
 export default {
     routes: [
@@ -308,7 +317,9 @@ export default {
         },{ 
           path: '/everydaypic',component:evdPic
         },{
-          path: '/user',component:User
+          path: '/userlist',component:UserList
+        },{
+          path: '/adminlist',component:AdminList
         },{ path: '/rank',component: Rank,
             children: [
               {
