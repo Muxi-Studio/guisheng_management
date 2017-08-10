@@ -22,7 +22,8 @@ category:{'/news':{
                 description:true,
                 images:true,
                 film_url:true,
-                film_img_url:true
+                film_img_url:true,
+                scores:true
           },
           '/article/music/':{
                 name:'/article/music/',

@@ -16,6 +16,7 @@
 </template>
 <script>
 import config from '../common/consts'
+import Cookie from '../cookie.js'
 import 'whatwg-fetch'
 	export default{
 		data (){
@@ -44,7 +45,7 @@ import 'whatwg-fetch'
 			  		fetch('/api/v1.0/special/', {
 	                    method: 'POST',
 	                    headers: {
-	                    	'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+	                    	'Authorization': Cookie.getCookie("token"),
 	                        'Accept': 'application/json',
 	                        'Content-Type': 'application/json'
 	                    },

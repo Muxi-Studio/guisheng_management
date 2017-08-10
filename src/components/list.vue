@@ -73,6 +73,16 @@
       width="100">
     </el-table-column>
     <el-table-column
+      prop="saver"
+      label="上次保存"
+      width="140">
+    </el-table-column>
+    <el-table-column
+      prop="publisher"
+      label="发布者"
+      width="140">
+    </el-table-column>
+    <el-table-column
       fixed="right"
       width="280"
       :context="_self"
@@ -126,6 +136,7 @@
 var route = ''
 var sub = ''
 import config from "../common/consts.js"
+import Cookie from '../cookie.js'
 	export default{
 		data(){
 			return {
@@ -159,7 +170,7 @@ import config from "../common/consts.js"
       updateCnt(){
         fetch("/api/v1.0/list/?page=1&count=10&kind=" + route,{
           headers: {
-            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+            'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
@@ -176,7 +187,7 @@ import config from "../common/consts.js"
           fetch("/api/v1.0/tea/", {
               method: 'Get',
               headers: {
-                'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Authorization': Cookie.getCookie("token"),
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
               }
@@ -192,7 +203,7 @@ import config from "../common/consts.js"
       updateSpecialCnt(){
         fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=1`,{
           headers: {
-            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+            'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
@@ -230,7 +241,7 @@ import config from "../common/consts.js"
         fetch("/api/v1.0/tea/", {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -243,7 +254,7 @@ import config from "../common/consts.js"
         fetch("/api/v1.0/unpublish/", {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -257,14 +268,18 @@ import config from "../common/consts.js"
         })        
       },
       handlePublish(index,row){
+        var publish = new Object()
+        publish.kind = row.kind
+        publish.post_id = row.article_id
+        publish.publisher = Cookie.getCookie("uid")
         fetch("/api/v1.0/publish/", {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({kind:row.kind,post_id:row.article_id})
+            body: JSON.stringify(publish)
         }).then(value =>{
           if(this.specialFlag){
             this.updateSpecialCnt()
@@ -297,7 +312,7 @@ import config from "../common/consts.js"
         fetch(`/api/v1.0${locate}/${row.article_id}/`, {
             method: 'DELETE',
             headers: {
-            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+            'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
@@ -332,7 +347,7 @@ import config from "../common/consts.js"
           if (this.specialFlag) {
             fetch(`/api/v1.0/special/list/${this.$route.params.id}/${this.$route.params.cid}/?page=${val}`,{
               headers: {
-                'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+                'Authorization': Cookie.getCookie("token"),
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
               },
@@ -345,7 +360,7 @@ import config from "../common/consts.js"
         }else{
           fetch(`/api/v1.0/list/?page=${val}&count=10&kind=${route}`,{
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

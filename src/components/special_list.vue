@@ -84,6 +84,7 @@
 
 <script>
 var route = ""
+import Cookie from '../cookie.js'
   export default {
     data() {
       return {
@@ -108,7 +109,7 @@ var route = ""
       updateCnt(){
         fetch(`${route}?page=1`,{
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -126,7 +127,7 @@ var route = ""
           this.currentPage = val;
           fetch(`${route}?page=${val}`,{
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -141,7 +142,7 @@ var route = ""
         fetch(`/api/v1.0/special/${row.id}/`, {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

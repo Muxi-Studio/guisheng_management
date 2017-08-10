@@ -55,6 +55,7 @@
 <script>
 var req = "";
 import config from "../common/consts.js"
+import Cookie from '../cookie.js'
   export default {
     data(){
       return {
@@ -70,7 +71,7 @@ import config from "../common/consts.js"
       updateCnt(){
         fetch(`/api/v1.0/user/list/?count=10&page=1`,{
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
           },
@@ -86,7 +87,7 @@ import config from "../common/consts.js"
           this.currentPage = val;
           fetch(`/api/v1.0/user/list/?count=10&page=${val}`,{
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
@@ -109,7 +110,7 @@ import config from "../common/consts.js"
         fetch(req, {
             method: 'POST',
             headers: {
-            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+            'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },

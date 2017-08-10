@@ -20,6 +20,7 @@
   </template>
 
   <script>
+  import Cookie from '../cookie.js'
     export default {
       data() {
         return {

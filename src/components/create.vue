@@ -37,6 +37,9 @@
 			<el-form-item label="电影图片url" prop="film_img_url" v-if="config.film_img_url">
 				<el-input v-model="create.film_img_url"></el-input>
 			</el-form-item>
+			<el-form-item label="电影豆瓣评分" prop="scores" v-if="config.scores">
+				<el-input v-model="create.scores"></el-input>
+			</el-form-item>
 			<el-form-item>
 				<el-tag
 				  v-for="tag in create.tags"
@@ -58,6 +61,7 @@
 <script>
 var specialRoute = ""
 import config from '../common/consts'
+import Cookie from '../cookie.js'
 import 'whatwg-fetch'
 	export default{
 		data (){
@@ -135,7 +139,7 @@ import 'whatwg-fetch'
 		                headers: {
 		                	'Accept': 'application/json',
                     		'Content-Type': 'application/json',
-		                    'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00='
+		                    'Authorization': Cookie.getCookie("token")
 	                	},
 	            	})
 		            .then( (res) => {
@@ -157,6 +161,7 @@ import 'whatwg-fetch'
 				  		if(this.url === '/article'){
 					  		result = this.create
 				  			result.flag = config.list[this.url_kind]
+				  			result.saver = Cookie.getCookie("uid")
 				  			console.log(result.flag)
 				  		}else{
 					  		var result = new Object()
@@ -165,6 +170,7 @@ import 'whatwg-fetch'
 					  		result.editor = this.create.editor
 					  		result.img_url = this.create.img_url
 					  		result.tags = this.create.tags
+					  		result.saver = Cookie.getCookie("uid")
 					  		if(this.url === '/interaction'){
 					  			result.flag = config.list[this.url_kind]
 					  		}
@@ -194,7 +200,7 @@ import 'whatwg-fetch'
 				  		fetch(this.route, {
 		                    method: this.modify?'PUT':'POST',
 		                    headers: {
-		                    	'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+		                    	'Authorization': Cookie.getCookie("token"),
 		                        'Accept': 'application/json',
 		                        'Content-Type': 'application/json'
 		                    },

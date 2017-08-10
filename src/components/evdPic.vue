@@ -36,6 +36,7 @@
 	</div>
 </template>
 <script>
+import Cookie from '../cookie.js'
 	var climatetype = ['晴','阴','雨']
 	export default{
 		data(){
@@ -58,7 +59,7 @@
 		  		fetch(`/api/v1.0/everydaypic/`, {
 	                method: 'POST',
 	                headers: {
-	                	'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+	                	'Authorization': Cookie.getCookie("token"),
 	                    'Accept': 'application/json',
 	                    'Content-Type': 'application/json'
 	                },
@@ -74,7 +75,7 @@
 	                headers: {
 	                	'Accept': 'application/json',
                 		'Content-Type': 'application/json',
-	                    'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00='
+	                    'Authorization': Cookie.getCookie("token")
                 	},
             	})
 	            .then( (res) => {

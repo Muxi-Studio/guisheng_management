@@ -131,9 +131,8 @@ export default {
 		    .then(res => {
             	return res.json()
         	}).then(value => {
-            	console.log("value = ",value)
             	username = value.username
-            	Cookie.setCookie("token", value.username)
+            	Cookie.setCookie("username", username)
             	fetch("/api/v1.0/admin/login/",{
 		            method: 'POST',
 		            headers: {

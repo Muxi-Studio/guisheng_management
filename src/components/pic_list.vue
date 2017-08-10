@@ -76,6 +76,7 @@
 
 <script>
 import { MessageBox } from 'element-ui';
+import Cookie from '../cookie.js'
 export default {
   data() {
     return {
@@ -106,7 +107,7 @@ export default {
       fetch(`/api/v1.0/pics/${this.id}/`, {
           method: 'GET',
           headers: {
-          'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+          'Authorization': Cookie.getCookie("token"),
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
@@ -124,7 +125,7 @@ export default {
       fetch(`/api/v1.0/pics/${this.id}/pic/${e}/`, {
         method: 'DELETE',
         headers: {
-          'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+          'Authorization': Cookie.getCookie("token"),
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         }
@@ -143,10 +144,11 @@ export default {
           config.title = this.content.title
           config.author = this.content.author
           config.tags = this.content.tags
+          config.saver = Cookie.getCookie("uid")
           fetch('/api/v1.0/pics/', {
             method: 'POST',
             headers: {
-              'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
+              'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
