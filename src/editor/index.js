@@ -7,6 +7,7 @@ import { convertToRaw, EditorState, ContentState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html'
+import Cookie from '../cookie.js'
 
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
@@ -57,15 +58,15 @@ export default class MyEditor extends Component {
 		const { editorState } = this.state
 		if(editorState) {
 			const HTML = draftToHtml(convertToRaw(editorState.getCurrentContent()))
+			const saver = Cookie.getCookie("uid")
 			e.preventDefault()
         fetch(`/api/v1.0${this.url}/body/`, {
             method: 'PUT',
             headers: {
-	            'Authorization': 'Basic ZXlKaGJHY2lPaUpJVXpJMU5pSjkuZXlKcFpDSTZNVEo5Lmp6bjJKMzc0WlByN1ZscDFkeFowUFZLcGQyVmpvUkowbHdadkVmdkljQ00=',
-	          	'Accept': 'application/json',
+	            'Authorization': Cookie.getCookie("token"),
 			    'Content-Type': 'application/json'
           	},
-          	body: JSON.stringify({body:HTML})
+          	body: JSON.stringify({body:HTML,saver:saver})
         }).then((res) =>{
           return res.json()
         }).then(value =>{
