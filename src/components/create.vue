@@ -183,9 +183,9 @@ import 'whatwg-fetch'
 
 				  		if(this.modify) {
 				  			if(specialRoute === 'article'){
-				  				this.route = `/api/v1.0/news/${this.$route.params.aid}`
+				  				this.route = `/api/v1.0/news/${this.$route.params.aid}/`
 				  			}else if(specialRoute === 'picture'){
-				  				this.route = `/api/v1.0/pics/${this.$route.params.aid}`
+				  				this.route = `/api/v1.0/pics/${this.$route.params.aid}/`
 				  			}else{
 				  				this.route = `/api/v1.0${this.url}/${this.id}/`
 				  			}
