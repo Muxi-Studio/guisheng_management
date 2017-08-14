@@ -2,6 +2,7 @@ const send = require('koa-send');
 const Koa = require('koa');
 const Router = require('koa-router');
 const userAgent = require('koa-useragent');
+const historyFallback = require('koa2-history-api-fallback')
 const path = require('path')
 const swig = require('swig');
 const router = new Router();
@@ -17,11 +18,11 @@ router.get('/admin', function(ctx, next){
         ctx.body = template({})
 });
 
-router.get('/admin/editor/:kind/:id', function(ctx, next){
-	console.log(ctx.userAgent)
-    let template = swig.compileFile(path.resolve(templateRoot, "editor.html"));
-        ctx.body = template({})
-});
+// router.get('/admin/editor/:kind/:id', function(ctx, next){
+// 	console.log(ctx.userAgent)
+//     let template = swig.compileFile(path.resolve(templateRoot, "editor.html"));
+//         ctx.body = template({})
+// });
 
 
 router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
@@ -31,7 +32,10 @@ router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
      });
 })
 
+
+
 app
+    .use(historyFallback())
     .use(router.routes())
     .use(router.allowedMethods());
 

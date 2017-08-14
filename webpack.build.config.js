@@ -13,9 +13,9 @@ var webpackConfig = merge(baseWebpackConfig, {
         alias: {
             'vue': path.resolve(__dirname, 'node_modules/vue/dist/vue.runtime.min'),
             'vue-router': path.resolve(__dirname, 'node_modules/vue-router/dist/vue-router.min'),
-            'react': path.resolve(__dirname, 'node_modules/react/dist/react.min'),
-            'react-dom': path.resolve(__dirname, 'node_modules/react-dom/dist/react-dom.min'),
-            'draft-js': path.resolve(__dirname, 'node_modules/draft-js/dist/Draft.min'),
+            // 'react': path.resolve(__dirname, 'node_modules/react/dist/react.min'),
+            // 'react-dom': path.resolve(__dirname, 'node_modules/react-dom/dist/react-dom.min'),
+            // 'draft-js': path.resolve(__dirname, 'node_modules/draft-js/dist/Draft.min'),
         }
     },
     module: {

@@ -28,6 +28,7 @@ import {
         } from 'element-ui'
 import './scss/reset.scss'
 import 'element-ui/lib/theme-default/index.css'
+import VueQuillEditor from 'vue-quill-editor'
 
 Vue.use(VueRouter)
 Vue.use(Button)
@@ -51,6 +52,7 @@ Vue.use(Card)
 Vue.use(Tag)
 Vue.use(Popover)
 Vue.use(DatePicker)
+Vue.use(VueQuillEditor)
 
 Vue.prototype.$notify = Notification;
 

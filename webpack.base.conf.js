@@ -14,9 +14,9 @@ function resolve(dir) {
 module.exports = {
     entry: {
         main: './src/main.js',
-        editor: './src/editor.js',
+        // editor: './src/editor.js',
         vueVendor: ['vue','vue-router','element-ui/lib/theme-default/index.css'],
-        reactVendor: ['react','react-dom']
+        // reactVendor: ['react','react-dom']
     },
     output: {
         path: path.join(__dirname, "./"),

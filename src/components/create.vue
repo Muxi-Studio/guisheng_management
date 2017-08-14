@@ -162,7 +162,6 @@ import 'whatwg-fetch'
 					  		result = this.create
 				  			result.flag = config.list[this.url_kind]
 				  			result.saver = Cookie.getCookie("uid")
-				  			console.log(result.flag)
 				  		}else{
 					  		var result = new Object()
 					  		result.title = this.create.title
@@ -196,7 +195,6 @@ import 'whatwg-fetch'
 					  			this.route = `/api/v1.0${this.url}/`
 					  		}
 				  		}
-				  		console.log(result)
 				  		fetch(this.route, {
 		                    method: this.modify?'PUT':'POST',
 		                    headers: {
@@ -206,7 +204,11 @@ import 'whatwg-fetch'
 		                    },
 		                    body: JSON.stringify(result)
 		                }).then(value =>{
-		                	console.log(value)
+		                	this.$notify({
+						        title: '成功',
+						        message: this.modify?'修改成功':'创建成功',
+						        type: 'success'
+        					});
 		                })
 		            }
 				})     	

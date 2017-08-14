@@ -299,7 +299,8 @@ import Cookie from '../cookie.js'
           if(!location){
             location = this.url
           }
-          window.location = `/admin/editor${location}/${row.article_id}`
+          console.log(`${location}/editor`)
+          this.$router.push({name:`${location}/editor`,params:{id:row.article_id}})
         }
       },
       handleDelete(index, row) {

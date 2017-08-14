@@ -14,6 +14,8 @@ import SpecialList from './components/special_list'
 import RankAuthor from './components/rankauthor'
 import RankArticle from './components/rankarticle'
 
+import Text_Modify from './components/editor'
+
 //home
 const Pics = Vue.extend({
     name:"Pics",
@@ -190,6 +192,10 @@ export default {
                 name:'/news',
                 component:Modify
               },{
+                path:'editor/:id',
+                name:'/news/editor',
+                component: Text_Modify
+              },{
                 path:'comments/:id',
                 name:'/news/comment',
                 component: Comment
@@ -240,7 +246,11 @@ export default {
                 path:'comments/:id',
                 name:'/article/comment',
                 component: Comment
-              }
+              },{
+                path:'editor/:id',
+                name:'/article/editor',
+                component: Text_Modify
+              },
           ]
         },
         { path: '/interaction',component:Interaction,
@@ -274,7 +284,12 @@ export default {
                 path:'comments/:id',
                 name:'/interaction/comment',
                 component: Comment
-              }
+              },
+              {
+                path:'editor/:id',
+                name:'/interaction/editor',
+                component: Text_Modify
+              },
             ]
         },
         { path: '/special',
