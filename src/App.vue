@@ -127,7 +127,7 @@ export default {
   			window.location.href = "https://user.muxixyz.com/?landing=119.23.35.1:8777/admin"
   		}else if(window.location.search!==''){
   			var username = ''
-		    var email = window.location.href.split('?')[1].split('=')[1]
+		    var email = window.location.href.split('&')[0].split('=')[1]
 		    email = decodeURIComponent(email)
 		    fetch("https://user.muxixyz.com/api/user/?email=" + email)
 		    .then(res => {
