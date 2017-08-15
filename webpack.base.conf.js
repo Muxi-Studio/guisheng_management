@@ -84,10 +84,10 @@ module.exports = {
             name: 'vue-vendor',
             chunks: ['vueVendor','main']
         }),
-   		new webpack.optimize.CommonsChunkPlugin({
-            name: 'react-vendor',
-            chunks: ['reactVendor','editor']
-        }),
+   		// new webpack.optimize.CommonsChunkPlugin({
+     //        name: 'react-vendor',
+     //        chunks: ['reactVendor','editor']
+     //    }),
         // extract webpack runtime and module manifest to its own file in order to
         // prevent vendor hash from being updated whenever app bundle is updated
         new webpack.optimize.CommonsChunkPlugin({
@@ -107,13 +107,13 @@ module.exports = {
                 NODE_ENV: '"production"'
             }
         }),
-        new HtmlWebpackPlugin({
-        	alwaysWriteToDisk: true,
-            filename: './templates/editor.html',
-            inject: false,
-            template: path.join(__dirname, './templates/editor.ejs'),
-            chunks:['manifest','react-vendor','editor']
-        }),
+        // new HtmlWebpackPlugin({
+        // 	alwaysWriteToDisk: true,
+        //     filename: './templates/editor.html',
+        //     inject: false,
+        //     template: path.join(__dirname, './templates/editor.ejs'),
+        //     chunks:['manifest','react-vendor','editor']
+        // }),
         new HtmlWebpackPlugin({
         	alwaysWriteToDisk: true,
             filename: './templates/home.html',            

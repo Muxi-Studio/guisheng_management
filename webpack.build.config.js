@@ -19,7 +19,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         }
     },
     module: {
-        noParse: [/vue\.runtime\.min/, /vue-router\.min/, /react\.min/]
+        noParse: [/vue\.runtime\.min/, /vue-router\.min/,]
     },
     output: {
         path: config.build.assetsRoot,
