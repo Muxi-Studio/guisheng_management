@@ -2,7 +2,6 @@ const send = require('koa-send');
 const Koa = require('koa');
 const Router = require('koa-router');
 const userAgent = require('koa-useragent');
-const historyFallback = require('koa2-history-api-fallback')
 const path = require('path')
 const swig = require('swig');
 const router = new Router();
@@ -35,7 +34,6 @@ router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
 
 
 app
-    .use(historyFallback())
     .use(router.routes())
     .use(router.allowedMethods());
 
