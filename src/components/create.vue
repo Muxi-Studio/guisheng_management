@@ -1,5 +1,7 @@
 <template>
 	<div class="wrap">
+		<input type="file" id="file" name="file"  v-on:change="getName" v-bind:value="this.inputValue" accept="image/*">
+
 		<el-form :model="create" :rules="rules" ref="create" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="标题" prop="title">
 				<el-input v-model="create.title"></el-input>
@@ -17,7 +19,15 @@
 				<el-input v-model="moretag"><el-button slot="append" type="primary" @click="addTag"><i class="el-icon-plus"></i></el-button></el-input>
 			</el-form-item>
 			<el-form-item label="封面图网址" prop="img_url">
-				<el-input v-model="create.img_url"></el-input>
+				<!-- <el-input v-model="create.img_url"></el-input> -->
+				<el-upload
+				  class="upload-demo"
+				  drag
+				  :before-upload="beforeAvatarUpload">
+				  <i class="el-icon-upload"></i>
+				  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+				  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过200kb</div>
+				</el-upload>
 			</el-form-item>
 			<el-form-item label="音乐URL" prop="music_url" v-if="config.music_img_url">
 				<el-input v-model="create.music_url" v-if="config.music_url"></el-input>
@@ -155,6 +165,20 @@ import 'whatwg-fetch'
 			handleReset() {
 				this.$refs.create.resetFields();
 			},
+			getName(e) {
+	            this.changedImg = URL.createObjectURL(e.target.files[0])
+	            this.avatarData = new FormData()
+	            this.avatarData.append('file', e.target.files[0])
+	            fetch('/guisheng/upload_pics/', {
+	                method: 'POST',
+	                body: this.avatarData
+	            }).then(res => {
+	                return res.json()
+	            }).then(value => {
+	                console.log(value)
+	            })
+	            this.editChange = true
+	        },
 			handleSubmit(ev) {
 				this.$refs.create.validate((valid) => {
 				  	if (valid) {
@@ -213,12 +237,75 @@ import 'whatwg-fetch'
 		            }
 				})     	
 			},
+			beforeAvatarUpload(elefile){
+				var reader = new FileReader(), img = new Image();
+				reader.readAsDataURL(elefile); 
+				reader.onload = function(e) {
+				    img.src = e.target.result;
+				};
+				var canvas = document.createElement('canvas');
+				var context = canvas.getContext('2d');
+				img.onload = function () {
+				    // 图片原始尺寸
+				    var originWidth = this.width;
+				    var originHeight = this.height;
+				    // 最大尺寸限制
+				    var maxWidth = 400, maxHeight = 400;
+				    // 目标尺寸
+				    var targetWidth = originWidth, targetHeight = originHeight;
+				    // 图片尺寸超过400x400的限制
+				    if (originWidth > maxWidth || originHeight > maxHeight) {
+				        if (originWidth / originHeight > maxWidth / maxHeight) {
+				            // 更宽，按照宽度限定尺寸
+				            targetWidth = maxWidth;
+				            targetHeight = Math.round(maxWidth * (originHeight / originWidth));
+				        } else {
+				            targetHeight = maxHeight;
+				            targetWidth = Math.round(maxHeight * (originWidth / originHeight));
+				        }
+				    }
+				        
+				    // canvas对图片进行缩放
+				    canvas.width = targetWidth;
+				    canvas.height = targetHeight;
+				    // 清除画布
+				    context.clearRect(0, 0, targetWidth, targetHeight);
+				    // 图片压缩
+				    context.drawImage(img, 0, 0, targetWidth, targetHeight);
+				    // canvas转为blob并上传
+				    console.log(elefile.type)
+
+				    canvas.toBlob(function (blob) {
+						fetch('/guisheng/upload_pics/', {
+			                method: 'POST',
+			                body: blob
+			            }).then(res => {
+			                return res.json()
+			            }).then(value => {
+			               	console.log(value)
+			            })  
+				    }, elefile.type || 'image/png');
+
+				    // canvas.toBlob(function (blob) {
+				    //     var xhr = new XMLHttpRequest();
+				    //     xhr.onreadystatechange = function() {
+				    //         if (xhr.status == 200) {
+				    //         	console.log(xhr.responseText)
+				    //         }
+				    //     };
+				    //     xhr.open("POST", '/guisheng/upload_pics/', true);
+				    //     xhr.send(blob);    
+				    // }, elefile.type || 'image/png'); 
+				    
+				};
+				return false;
+			},
 			handleSuccess(response,file,fileList){
 				this.create.img_url = response.pic_url
 				console.log(response)
 			},
 			handleRemove(file, fileList) {
-		        this.img_url = ''
+		        this.create.img_url = ''
 		    },
 		    handlePreview(file) {
 		        console.log(file.response);

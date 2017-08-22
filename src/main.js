@@ -25,6 +25,7 @@ import {
 	Popover,
 	DatePicker,
 	Notification,
+	Upload,
         } from 'element-ui'
 import './scss/reset.scss'
 import 'element-ui/lib/theme-default/index.css'
@@ -53,6 +54,7 @@ Vue.use(Tag)
 Vue.use(Popover)
 Vue.use(DatePicker)
 Vue.use(VueQuillEditor)
+Vue.use(Upload)
 
 Vue.prototype.$notify = Notification;
 
