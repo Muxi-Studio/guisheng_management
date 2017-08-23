@@ -5,14 +5,14 @@ module.exports = {
 	mock: "/mock/mock.json", // dir for mock data
 	webpack: true, // flag for using webpack or not
 	webpackConfigPath: path.join(__dirname, "./webpack.dev.config.js"),
-	proxy: {
-		route: "/guisheng/upload_pics/",
-		origin: "http://119.23.35.1:7777"
-	},
 	// proxy: {
-	// 	route: "/api",
-	// 	origin: "http://119.23.35.1:8888"
+	// 	route: "/guisheng/upload_pics/",
+	// 	origin: "http://119.23.35.1:7777"
 	// },
+	proxy: {
+		route: "/api",
+		origin: "http://119.23.35.1:8888"
+	},
 	// proxy: {
 	// 	route: "/api",
 	// 	origin: "http://xueer.muxixyz.com"

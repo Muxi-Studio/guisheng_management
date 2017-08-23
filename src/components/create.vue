@@ -169,7 +169,7 @@ import 'whatwg-fetch'
 	            this.changedImg = URL.createObjectURL(e.target.files[0])
 	            this.avatarData = new FormData()
 	            this.avatarData.append('file', e.target.files[0])
-	            fetch('/guisheng/upload_pics/', {
+	            fetch('/api/v1.0/guisheng/upload_pics/', {
 	                method: 'POST',
 	                body: this.avatarData
 	            }).then(res => {
@@ -237,7 +237,11 @@ import 'whatwg-fetch'
 		            }
 				})     	
 			},
+			dataURItoBlob(dataURI) {
+
+			},
 			beforeAvatarUpload(elefile){
+				var selft = this
 				var reader = new FileReader(), img = new Image();
 				reader.readAsDataURL(elefile); 
 				reader.onload = function(e) {
@@ -271,20 +275,38 @@ import 'whatwg-fetch'
 				    // 清除画布
 				    context.clearRect(0, 0, targetWidth, targetHeight);
 				    // 图片压缩
-				    context.drawImage(img, 0, 0, targetWidth, targetHeight);
-				    // canvas转为blob并上传
-				    console.log(elefile.type)
+				    context.drawImage(img, 0, 0, targetWidth, targetHeight)
 
-				    canvas.toBlob(function (blob) {
-						fetch('/guisheng/upload_pics/', {
-			                method: 'POST',
-			                body: blob
-			            }).then(res => {
-			                return res.json()
-			            }).then(value => {
-			               	console.log(value)
-			            })  
-				    }, elefile.type || 'image/png');
+				    // canvas转为blob并上传
+				 //    var dataUrl = canvas.toDataURL('image/jpeg');
+				    
+				 //    var binary = atob(dataUrl.split(',')[1]);
+				 //    var array = [];
+					// for(var i = 0; i < binary.length; i++) {
+					//     array.push(binary.charCodeAt(i));
+					// }
+					// var blobData = new Blob([new Uint8Array(array)],{type: 'image/jpeg'})
+
+				 //    fetch('/api/v1.0/guisheng/upload_pics/', {
+		   //              method: 'POST',
+		   //              body: blobData
+		   //          }).then(res => {
+		   //              return res.json()
+		   //          }).then(value => {
+		   //             	console.log(value)
+		   //          }) 
+		   //          
+		   			 
+				  //   canvas.toBlob(function (blob) {
+						// fetch('/api/v1.0/guisheng/upload_pics/', {
+			   //              method: 'POST',
+			   //              body: blob
+			   //          }).then(res => {
+			   //              return res.json()
+			   //          }).then(value => {
+			   //             	console.log(value)
+			   //          })  
+				  //   }, elefile.type || 'image/png');
 
 				    // canvas.toBlob(function (blob) {
 				    //     var xhr = new XMLHttpRequest();
@@ -293,7 +315,7 @@ import 'whatwg-fetch'
 				    //         	console.log(xhr.responseText)
 				    //         }
 				    //     };
-				    //     xhr.open("POST", '/guisheng/upload_pics/', true);
+				    //     xhr.open("POST", '/api/v1.0/guisheng/upload_pics/', true);
 				    //     xhr.send(blob);    
 				    // }, elefile.type || 'image/png'); 
 				    
