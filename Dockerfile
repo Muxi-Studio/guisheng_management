@@ -12,7 +12,7 @@ RUN npm run build
 WORKDIR /usr/src/app/server
 
 # Build server file
-RUN npm install --registry=https://registry.npm.taobao.org
+RUN npm install npm@latest --registry=https://registry.npm.taobao.org
 
 # Bundle app source
 EXPOSE 8080

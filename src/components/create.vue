@@ -278,24 +278,23 @@ import 'whatwg-fetch'
 				    context.drawImage(img, 0, 0, targetWidth, targetHeight)
 
 				    // canvas转为blob并上传
-				 //    var dataUrl = canvas.toDataURL('image/jpeg');
+				    var dataUrl = canvas.toDataURL('image/jpeg');
 				    
-				 //    var binary = atob(dataUrl.split(',')[1]);
-				 //    var array = [];
-					// for(var i = 0; i < binary.length; i++) {
-					//     array.push(binary.charCodeAt(i));
-					// }
-					// var blobData = new Blob([new Uint8Array(array)],{type: 'image/jpeg'})
+				    var binary = atob(dataUrl.split(',')[1]);
+				    var array = [];
+					for(var i = 0; i < binary.length; i++) {
+					    array.push(binary.charCodeAt(i));
+					}
+					var blobData = new Blob([new Uint8Array(array)],{type: 'image/jpeg'})
 
-				 //    fetch('/api/v1.0/guisheng/upload_pics/', {
-		   //              method: 'POST',
-		   //              body: blobData
-		   //          }).then(res => {
-		   //              return res.json()
-		   //          }).then(value => {
-		   //             	console.log(value)
-		   //          }) 
-		   //          
+				    fetch('/upload', {
+		                method: 'POST',
+		                body: blobData
+		            }).then(res => {
+		                return res.json()
+		            }).then(value => {
+		               	console.log(value)
+		            })          
 		   			 
 				  //   canvas.toBlob(function (blob) {
 						// fetch('/api/v1.0/guisheng/upload_pics/', {

@@ -4,12 +4,14 @@ const Router = require('koa-router');
 const userAgent = require('koa-useragent');
 const path = require('path')
 const swig = require('swig');
+const bodyParser = require('koa-bodyparser');
 const router = new Router();
 const app = new Koa();
 
 const templateRoot = path.join(__dirname, "../dist/templates")
 
 app.use(userAgent);
+app.use(bodyParser());
 
 router.get('/admin', function(ctx, next){
 	console.log(ctx.userAgent)
@@ -23,6 +25,10 @@ router.get('/admin', function(ctx, next){
 //         ctx.body = template({})
 // });
 
+router.post('/upload',function(ctx, next){
+    ctx.body = ctx.request.body;
+    console.log(ctx.body)
+})
 
 router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
     let filePath = ctx.path.replace(/admin\/static\//, "")

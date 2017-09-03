@@ -124,7 +124,7 @@ import FETCH from './fetch.js'
 export default {
   	mounted(){
   		if(Cookie.getCookie("token")==='' && window.location.search===''){
-  			window.location.href = "https://user.muxixyz.com/?landing=localhost:3000/admin"
+  			window.location.href = "https://user.muxixyz.com/?landing=gs.muxixyz.com/admin"
   		}else if(window.location.search!==''){
   			var username = ''
 		    var email = window.location.href.split('&')[0].split('=')[1]
