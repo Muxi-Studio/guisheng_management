@@ -1,7 +1,6 @@
 /* editor 
 /* 
 /* by stephen 2017.2.20 */
-
 import React, { Component } from 'react'
 import { convertToRaw, EditorState, ContentState } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
