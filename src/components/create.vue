@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-		<!-- <input type="file" id="file" name="file"  v-on:change="getName" v-bind:value="this.inputValue" accept="image/*"> -->
+		<input type="file" id="file" name="file"  v-on:change="getName" v-bind:value="this.inputValue" accept="image/*">
 
 		<el-form :model="create" :rules="rules" ref="create" label-width="100px" class="demo-ruleForm">
 			<el-form-item label="标题" prop="title">
@@ -166,18 +166,20 @@ import 'whatwg-fetch'
 				this.$refs.create.resetFields();
 			},
 			getName(e) {
-	            this.changedImg = URL.createObjectURL(e.target.files[0])
+				this.changedImg = URL.createObjectURL(e.target.files[0])
+				console.log(e.target.files[0])
 	            this.avatarData = new FormData()
-	            this.avatarData.append('file', e.target.files[0])
-	            fetch('/api/v1.0/guisheng/upload_pics/', {
-	                method: 'POST',
-	                body: this.avatarData
-	            }).then(res => {
-	                return res.json()
-	            }).then(value => {
-	                console.log(value)
-	            })
-	            this.editChange = true
+				this.avatarData.append('file', e.target.files[0])
+				console.log(this.avatarData)
+	            // fetch('/api/v1.0/guisheng/upload_pics/', {
+	            //     method: 'POST',
+	            //     body: this.avatarData
+	            // }).then(res => {
+	            //     return res.json()
+	            // }).then(value => {
+	            //     console.log(value)
+	            // })
+	            // this.editChange = true
 	        },
 			handleSubmit(ev) {
 				this.$refs.create.validate((valid) => {
@@ -237,10 +239,7 @@ import 'whatwg-fetch'
 		            }
 				})     	
 			},
-			dataURItoBlob(dataURI) {
-
-			},
-			beforeAvatarUpload(elefile){
+			beforeAvatar(elefile){
 				var selft = this
 				var reader = new FileReader(), img = new Image();
 				reader.readAsDataURL(elefile); 
@@ -320,6 +319,20 @@ import 'whatwg-fetch'
 				    
 				};
 				return false;
+			},
+			beforeAvatarUpload(elefile){
+				console.log(elefile)
+	        	// this.changedImg = URL.createObjectURL(e.target.files[0])
+	            // this.avatarData = new FormData()
+	            // this.avatarData.append('file', e.target.files[0])
+	            // fetch('/upload', {
+	            //     method: 'POST',
+	            //     body: elefile
+	            // }).then(res => {
+	            //     return res.json()
+	            // }).then(value => {
+	            //     console.log(value)
+	            // })			
 			},
 			handleSuccess(response,file,fileList){
 				this.create.img_url = response.pic_url
