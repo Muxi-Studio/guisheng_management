@@ -1,3 +1,11 @@
+const Busboy = require('busboy')
+const serve = require('koa-static')
+const qiniu = require('qiniu')
+const inspect = require('util').inspect
+const path = require('path')
+const os = require('os')
+const fs = require('fs')
+
 const mkdirsSync = (dirname) => {
     if (fs.existsSync(dirname)) {
         return true
@@ -10,13 +18,9 @@ const mkdirsSync = (dirname) => {
     return false
 }
 
-function getSuffix(fileName) {
-    return fileName.split('.').pop()
-}
-
 // 重命名
 function Rename(fileName) {
-    return Math.random().toString(16).substr(2) + '.' + getSuffix(fileName)
+    return Math.random().toString(16).substr(2) + '.jpg'
 }
 // 删除文件
 function removeTemImage(path) {
@@ -28,36 +32,39 @@ function removeTemImage(path) {
 }
 // 上传到七牛
 function upToQiniu(filePath, key) {
-    const accessKey = process.env.ACCESS_KEY
-    const secretKey = process.env.SECRET_KEY
+    // const accessKey = process.env.ACCESS_KEY
+    // const secretKey = process.env.SECRET_KEY
+
+    const accessKey = '0bNiwJGpdwmvvuVAzLDjM6gnxj9MiwmSagVpIW81'
+    const secretKey = 'zHA9w8PoSfL6D4dvWNwU2GF4XHUn9MalynbANE3_'
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
 
     const options = {
-        scope: qiniuConfig.scope // 你的七牛存储对象
+        scope: 'ccnustatic' // 你的七牛存储对象
     }
     const putPolicy = new qiniu.rs.PutPolicy(options)
     const uploadToken = putPolicy.uploadToken(mac)
 
     const config = new qiniu.conf.Config()
     // 空间对应的机房
-    config.zone = qiniu.zone.Zone_z2
+    config.zone = qiniu.zone.Zone_z0
     const localFile = filePath
     const formUploader = new qiniu.form_up.FormUploader(config)
     const putExtra = new qiniu.form_up.PutExtra()
+    var key = `guisheng_mana/${key}`
     // 文件上传
     return new Promise((resolved, reject) => {
         formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr, respBody, respInfo) {
-            if (respErr) {
-                reject(respErr)
-            }
-            if (respInfo.statusCode == 200) {
-                resolved(respBody)
-            } else {
-                resolved(respBody)
-            }
+          if (respErr) {
+            reject(respErr)
+          }
+          if (respInfo.statusCode == 200) {
+            resolved(respBody)
+          } else {
+            resolved(respBody)
+          }
         })
     })
-
 }
 
 // 上传到本地服务器
@@ -101,7 +108,6 @@ function uploadFile(ctx, options) {
 
 var upload = {
     mkdirsSync:mkdirsSync,
-    getSuffix:getSuffix,
     Rename:Rename,
     removeTemImage:removeTemImage,
     upToQiniu:upToQiniu,

@@ -5,8 +5,7 @@ const userAgent = require('koa-useragent');
 const path = require('path')
 const swig = require('swig');
 const bodyParser = require('koa-bodyparser');
-const qiniu = require('qiniu')
-const upload = require('./upload.js')
+var upload = require('./upload.js');
 // const qiniuConfig = require('./qiniuconfig');
 const router = new Router();
 const app = new Koa();
@@ -38,7 +37,7 @@ router.get('/admin', function(ctx, next){
 // });
 
 
-router.post('/upload',function(ctx, next){
+router.post('/upload', async(ctx, next)=>{
     const serverPath = path.join(__dirname, './uploads/')
 
     const result = await upload.uploadFile(ctx, {
@@ -48,12 +47,12 @@ router.post('/upload',function(ctx, next){
 
     const imgPath = path.join(serverPath, result.imgPath)
 
-    const qiniu = await upload.upToQiniu(imgPath, result.imgKey)
+    const qiniu_result = await upload.upToQiniu(imgPath, result.imgKey)
 
     upload.removeTemImage(imgPath)
     
     ctx.body = {
-        imgUrl: `${qiniu.key}`
+        imgUrl: `http://static.muxixyz.com/${qiniu_result.key}`
     }
 })
 

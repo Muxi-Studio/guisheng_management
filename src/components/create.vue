@@ -24,7 +24,7 @@
 			</el-form-item>
 			<el-form-item label="封面图网址" prop="img_url">
 				<!-- <el-input v-model="create.img_url"></el-input> -->
-				<el-upload class="upload-demo" drag :before-upload="beforeAvatarUpload">
+				<el-upload class="upload-demo" :before-upload="beforeAvatar" :on-change="onUpload">
 					<i class="el-icon-upload"></i>
 					<div class="el-upload__text">将文件拖到此处，或
 						<em>点击上传</em>
@@ -163,22 +163,6 @@ export default {
 		handleReset() {
 			this.$refs.create.resetFields();
 		},
-		getName(e) {
-			this.changedImg = URL.createObjectURL(e.target.files[0])
-			console.log(e.target.files[0])
-			this.avatarData = new FormData()
-			this.avatarData.append('file', e.target.files[0])
-			console.log(this.avatarData)
-			// fetch('/api/v1.0/guisheng/upload_pics/', {
-			//     method: 'POST',
-			//     body: this.avatarData
-			// }).then(res => {
-			//     return res.json()
-			// }).then(value => {
-			//     console.log(value)
-			// })
-			// this.editChange = true
-		},
 		handleSubmit(ev) {
 			this.$refs.create.validate((valid) => {
 				if (valid) {
@@ -238,7 +222,7 @@ export default {
 			})
 		},
 		beforeAvatar(elefile) {
-			var selft = this
+			var self = this
 			var reader = new FileReader(), img = new Image();
 			reader.readAsDataURL(elefile);
 			reader.onload = function(e) {
@@ -274,74 +258,38 @@ export default {
 				// 图片压缩
 				context.drawImage(img, 0, 0, targetWidth, targetHeight)
 
-				// canvas转为blob并上传
-				var dataUrl = canvas.toDataURL('image/jpeg');
-
-				var binary = atob(dataUrl.split(',')[1]);
-				var array = [];
-				for (var i = 0; i < binary.length; i++) {
-					array.push(binary.charCodeAt(i));
-				}
-				var blobData = new Blob([new Uint8Array(array)], { type: 'image/jpeg' })
-
+				canvas.toBlob(function (blob) {
+				var avatarData = new FormData()
+				avatarData.append('file', blob)
 				fetch('/upload', {
-					method: 'POST',
-					body: blobData
-				}).then(res => {
-					return res.json()
-				}).then(value => {
-					console.log(value)
-				})
-
-				//   canvas.toBlob(function (blob) {
-				// fetch('/api/v1.0/guisheng/upload_pics/', {
-				//              method: 'POST',
-				//              body: blob
-				//          }).then(res => {
-				//              return res.json()
-				//          }).then(value => {
-				//             	console.log(value)
-				//          })  
-				//   }, elefile.type || 'image/png');
-
-				// canvas.toBlob(function (blob) {
-				//     var xhr = new XMLHttpRequest();
-				//     xhr.onreadystatechange = function() {
-				//         if (xhr.status == 200) {
-				//         	console.log(xhr.responseText)
-				//         }
-				//     };
-				//     xhr.open("POST", '/api/v1.0/guisheng/upload_pics/', true);
-				//     xhr.send(blob);    
-				// }, elefile.type || 'image/png'); 
+				             method: 'POST',
+				             body:avatarData
+				         }).then(res => {
+				             return res.json()
+				         }).then(value => {
+							console.log(value)
+							self.$refs.create.img_url = value.imgUrl
+							self.create.img_url = value.imgUrl
+				            console.log(self.create)
+				         })  
+				  }, elefile.type || 'image/png');
 
 			};
 			return false;
 		},
-		beforeAvatarUpload(elefile) {
-			console.log(elefile)
-			// this.changedImg = URL.createObjectURL(e.target.files[0])
-			// this.avatarData = new FormData()
-			// this.avatarData.append('file', e.target.files[0])
-			// fetch('/upload', {
-			//     method: 'POST',
-			//     body: elefile
-			// }).then(res => {
-			//     return res.json()
-			// }).then(value => {
-			//     console.log(value)
-			// })			
+		onUpload(file){
+			
 		},
-		handleSuccess(response, file, fileList) {
-			this.create.img_url = response.pic_url
-			console.log(response)
-		},
-		handleRemove(file, fileList) {
-			this.create.img_url = ''
-		},
-		handlePreview(file) {
-			console.log(file.response);
-		},
+		// handleSuccess(response, file, fileList) {
+		// 	this.create.img_url = response.pic_url
+		// 	console.log(response)
+		// },
+		// handleRemove(file, fileList) {
+		// 	this.create.img_url = ''
+		// },
+		// handlePreview(file) {
+		// 	console.log(file.response);
+		// },
 		addTag() {
 			this.create.tags.push(this.moretag)
 		}
