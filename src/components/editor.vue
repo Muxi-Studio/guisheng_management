@@ -109,6 +109,7 @@ import Cookie from '../cookie.js'
   }
   .submitbtn{
     margin-top: 30px;
+    padding-bottom: 30px;
     text-align: center;
   }
 </style>

@@ -42,7 +42,7 @@ module.exports = {
             loader: 'html-loader'
         }, {
             test: /\.(png|jpg|gif|svg)$/,
-            loader: 'file?limit=8192',
+            loader: 'file-loader',
             query: {
                 name: '[name].[ext]?[hash]'
             }

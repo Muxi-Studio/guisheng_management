@@ -18,7 +18,17 @@ app.use(bodyParser());
 
 router.get('/admin', function(ctx, next){
     let template = swig.compileFile(path.resolve(templateRoot, "home.html"));
-        ctx.body = template({})
+    ctx.body = template({})
+    if(!ctx.request.query.token && !ctx.cookies.get("token_auth")){
+        ctx.redirect('https://user.muxixyz.com/?landing=localhost:8080/admin')
+    }else if(ctx.request.query.email && ctx.request.query.token){
+        ctx.cookies.set("email", ctx.request.query.email, {
+            httpOnly: false,
+        })
+        ctx.cookies.set("token_auth", ctx.request.query.token, {
+            httpOnly: false,
+        })
+    }
 });
 
 // router.get('/admin/editor/:kind/:id', function(ctx, next){
@@ -29,10 +39,22 @@ router.get('/admin', function(ctx, next){
 
 
 router.post('/upload',function(ctx, next){
+    const serverPath = path.join(__dirname, './uploads/')
+
+    const result = await upload.uploadFile(ctx, {
+        fileType: 'album',
+        path: serverPath
+    })
+
+    const imgPath = path.join(serverPath, result.imgPath)
+
+    const qiniu = await upload.upToQiniu(imgPath, result.imgKey)
+
+    upload.removeTemImage(imgPath)
     
-    // const qiniu = await upToQiniu(imgPath, result.imgKey)
-    ctx.body = ctx.request.body;
-    console.log(ctx.body)
+    ctx.body = {
+        imgUrl: `${qiniu.key}`
+    }
 })
 
 router.get(/^\/admin\/static(?:\/|$)/, async (ctx) => {
