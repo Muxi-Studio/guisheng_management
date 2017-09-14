@@ -22,16 +22,6 @@
 					</el-button>
 				</el-input>
 			</el-form-item>
-			<el-form-item label="封面图网址" prop="img_url">
-				<!-- <el-input v-model="create.img_url"></el-input> -->
-				<el-upload class="upload-demo" :before-upload="beforeAvatar" :on-change="onUpload">
-					<i class="el-icon-upload"></i>
-					<div class="el-upload__text">将文件拖到此处，或
-						<em>点击上传</em>
-					</div>
-					<div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过200kb</div>
-				</el-upload>
-			</el-form-item>
 			<el-form-item label="音乐URL" prop="music_url" v-if="config.music_img_url">
 				<el-input v-model="create.music_url" v-if="config.music_url"></el-input>
 			</el-form-item>
@@ -57,6 +47,17 @@
 				<el-tag v-for="tag in create.tags" :closable="true" :close-transition="false" @close="handleClose(tag)">
 					{{tag}}
 				</el-tag>
+			</el-form-item>
+			<el-form-item label="封面图网址" prop="img_url">
+				<!-- <el-input v-model="create.img_url"></el-input> -->
+				<el-input v-model="create.img_url" placeholder=""></el-input>
+				<el-upload
+					class="upload-demo"
+					:before-upload="beforeAvatar" 
+					:on-change="onUpload">
+					<el-button type="text">点击上传本地图片</el-button>					
+				</el-upload>
+				<img :src="create.img_url">
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" v-show="!modify" @click="handleSubmit">立即创建</el-button>
@@ -84,6 +85,7 @@ export default {
 			config: {
 			},
 			moretag: '',
+			filelist: [],
 			create: {
 				title: '',
 				author: '',
@@ -108,7 +110,37 @@ export default {
 				],
 				editor: [
 					{ required: true, message: '请输入编辑者名称', trigger: 'blur' }
-				]
+				],
+				description: [
+					{ required: true, trigger: 'blur' }
+				],
+				moretag: [
+					{ required: true}
+				],
+				music_url: [
+					{ required: true, trigger: 'blur' }
+				],
+				music_img_url: [
+					{ required: true, trigger: 'blur' }
+				],
+				music_title: [
+					{ required: true, trigger: 'blur' }
+				],
+				singer: [
+					{ required: true, trigger: 'blur' }
+				],	
+				film_url: [
+					{ required: true, trigger: 'blur' }
+				],
+				scores: [
+					{ required: true, trigger: 'blur' }
+				],
+				film_img_url: [
+					{ required: true, trigger: 'blur' }
+				],
+				img_url:[
+					{ required: true, trigger: 'blur' }
+				]		
 			},
 		}
 	},
@@ -276,9 +308,6 @@ export default {
 
 			};
 			return false;
-		},
-		onUpload(file){
-			
 		},
 		// handleSuccess(response, file, fileList) {
 		// 	this.create.img_url = response.pic_url
