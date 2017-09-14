@@ -112,34 +112,34 @@ export default {
 					{ required: true, message: '请输入编辑者名称', trigger: 'blur' }
 				],
 				description: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请填写作品描述', trigger: 'blur' }
 				],
 				moretag: [
 					{ required: true}
 				],
 				music_url: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入音乐资源url',trigger: 'blur' }
 				],
 				music_img_url: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入音乐封面图url', trigger: 'blur' }
 				],
 				music_title: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入歌名',trigger: 'blur' }
 				],
 				singer: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入歌手名',trigger: 'blur' }
 				],	
 				film_url: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入电影资源url',trigger: 'blur' }
 				],
 				scores: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入电影评分',trigger: 'blur' }
 				],
 				film_img_url: [
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请输入电影封面图url',trigger: 'blur' }
 				],
 				img_url:[
-					{ required: true, trigger: 'blur' }
+					{ required: true, message: '请上传文章封面图',trigger: 'blur' }
 				]		
 			},
 		}
