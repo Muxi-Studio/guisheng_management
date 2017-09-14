@@ -293,7 +293,7 @@ export default {
 				canvas.toBlob(function (blob) {
 				var avatarData = new FormData()
 				avatarData.append('file', blob)
-				fetch('/upload', {
+				fetch('/admin/upload', {
 				             method: 'POST',
 				             body:avatarData
 				         }).then(res => {

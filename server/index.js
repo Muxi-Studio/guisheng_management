@@ -37,7 +37,7 @@ router.get('/admin', function(ctx, next){
 // });
 
 
-router.post('/upload', async(ctx, next)=>{
+router.post('/admin/upload', async(ctx, next)=>{
     const serverPath = path.join(__dirname, './uploads/')
 
     const result = await upload.uploadFile(ctx, {
