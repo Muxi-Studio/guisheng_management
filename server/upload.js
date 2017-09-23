@@ -32,11 +32,9 @@ function removeTemImage(path) {
 }
 // 上传到七牛
 function upToQiniu(filePath, key) {
-    // const accessKey = process.env.ACCESS_KEY
-    // const secretKey = process.env.SECRET_KEY
+    const accessKey = process.env.ACCESS_KEY
+    const secretKey = process.env.SECRET_KEY
 
-    const accessKey = '0bNiwJGpdwmvvuVAzLDjM6gnxj9MiwmSagVpIW81'
-    const secretKey = 'zHA9w8PoSfL6D4dvWNwU2GF4XHUn9MalynbANE3_'
     const mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
 
     const options = {
