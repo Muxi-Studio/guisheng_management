@@ -167,6 +167,9 @@ export default {
 							FETCH.FetchData("/api/v1.0/admin/login/", "POST", {
 								email: email,
 								password: "muxistudio304",
+							}).then(value => {
+								Cookie.setCookie("token", value.token)
+								Cookie.setCookie("uid", value.uid)
 							})
 						})
 					}
