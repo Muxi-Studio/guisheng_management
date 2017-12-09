@@ -11,7 +11,7 @@ module.exports = {
 	// },
 	proxy: {
 		route: "/api",
-		origin: "http://119.23.35.1:8888"
+		origin: "http://gs.muxixyz.com"
 	},
 	// proxy: {
 	// 	route: "/api",

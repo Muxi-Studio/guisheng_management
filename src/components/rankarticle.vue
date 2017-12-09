@@ -70,14 +70,31 @@ import Cookie from '../cookie.js'
         tableData:[],
         currentPage:"",
         count: 0,
+        route:""
       }
     },
+    props:["month"],
     created(){
+        if(this.month){
+          this.route = `/api/v1.0/rank/articles/${this.month}/?count=10`
+        }else{
+          this.route = `/api/v1.0/rank/articles/?count=10`
+        }
         this.updateRankCnt()
+    },
+    watch: {
+      month: function (val) {
+        if(val){
+          this.route = `/api/v1.0/rank/articles/${val}/?count=10`          
+        }else{
+          this.route = `/api/v1.0/rank/articles/?count=10`
+        }
+        this.updateRankCnt()      
+      },
     },
     methods:{
       updateRankCnt(){
-        fetch(`/api/v1.0/rank/articles/?count=10&page=1`,{
+        fetch(`${this.route}&page=1`,{
           headers: {
             'Authorization': Cookie.getCookie("token"),
               'Accept': 'application/json',
@@ -88,7 +105,6 @@ import Cookie from '../cookie.js'
         return res.json()
       }).then( value => {
         this.tableData = value
-        console.log(this.tableData)
         if(value[0]){
           this.count = value[0].count
         }
@@ -105,7 +121,7 @@ import Cookie from '../cookie.js'
       },
       handleCurrentChange(val) {
           this.currentPage = val;
-            fetch(`/rank/articles/?count=10&page=${val}`,{
+            fetch(`${this.route}&page=${val}`,{
               headers: {
                 'Authorization': Cookie.getCookie("token"),
                   'Accept': 'application/json',

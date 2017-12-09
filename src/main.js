@@ -26,6 +26,7 @@ import {
 	DatePicker,
 	Notification,
 	Upload,
+	Option,
         } from 'element-ui'
 import './scss/reset.scss'
 import 'element-ui/lib/theme-default/index.css'
@@ -40,6 +41,7 @@ Vue.use(Submenu)
 Vue.use(MenuItem)
 Vue.use(MenuItemGroup)
 Vue.use(Input)
+Vue.use(Option)
 Vue.use(Radio)
 Vue.use(RadioGroup)
 Vue.use(RadioButton)

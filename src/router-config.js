@@ -11,8 +11,8 @@ import SpecialCre from './components/special'
 import SpecialList from './components/special_list'
 // import ChildContent from './components/child_content'
 
-import RankAuthor from './components/rankauthor'
-import RankArticle from './components/rankarticle'
+import RankMonthlyAuthor from './components/rankmonthlyauthor'
+import RankMonthlyArticle from './components/rankmonthlyarticle'
 
 import Text_Modify from './components/editor'
 
@@ -339,11 +339,11 @@ export default {
             children: [
               {
                 path: 'articles',
-                component: RankArticle
+                component: RankMonthlyArticle
               },
               {
                 path: 'authors',
-                component: RankAuthor
+                component: RankMonthlyAuthor
               }
             ]
         }

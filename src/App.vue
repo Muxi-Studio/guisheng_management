@@ -3,7 +3,7 @@
 		<header class="header">
 			<div class="content">
 				<div class="logo"></div>
-				<div class="info">Welcome, {{username}}</div>
+				<div class="info">欢迎，{{username}}</div>
 			</div>
 		</header>
 		<div class="container">
@@ -56,6 +56,7 @@
 							<template slot="title">统计</template>
 							<el-menu-item index="/rank/articles">内容排名</el-menu-item>
 							<el-menu-item index="/rank/authors">作者排名</el-menu-item>
+<!-- 							<el-menu-item index="/rank/authors">作者排名</el-menu-item> -->
 						</el-submenu>
 					</el-menu>
 				</div>
@@ -79,7 +80,7 @@
 	z-index:40;
 	height: 80px;
 	width: 100%;
-	background-color: rgb(32, 160, 255);
+	border-bottom:2px solid #D3D3D3;
 	.content{
 		width:100%;
 		height:100%;
@@ -95,8 +96,8 @@
 		.info{
 			width:300px;
 			height:100%;
+			color: grey;
 			line-height:80px;
-			color:white;
 			font-size:18px;
 		}
 	}
