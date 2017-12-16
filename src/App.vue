@@ -3,7 +3,11 @@
 		<header class="header">
 			<div class="content">
 				<div class="logo"></div>
-				<div class="info">欢迎，{{username}}</div>
+				<div class="info">
+					<a class="username">{{username}}，桂声爱你</a>
+					<el-button type="primary" plain @click="logout">退出登录</el-button>
+				</div>
+				
 			</div>
 		</header>
 		<div class="container">
@@ -94,11 +98,14 @@
 			background-repeat:no-repeat;
 		}
 		.info{
-			width:300px;
+			width:320px;
 			height:100%;
 			color: grey;
 			line-height:80px;
 			font-size:18px;
+			.username{
+				margin-right:30px;
+			}
 		}
 	}
 }
@@ -134,6 +141,7 @@
 <script>
 import Cookie from './cookie.js'
 import FETCH from './fetch.js'
+import Config from './common/config.js'
 export default {
 	mounted() {
 		var username = ""
@@ -195,6 +203,13 @@ export default {
 		push() {
 			console.log("hah");
 		},
+		logout(){
+			Cookie.delCookie("token")
+			Cookie.delCookie("uid")
+			Cookie.delCookie("email")
+			Cookie.delCookie("username")
+			window.location.href = Config.domain
+		}
 	}
 }
 </script>
