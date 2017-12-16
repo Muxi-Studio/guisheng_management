@@ -49,7 +49,7 @@ router.post('/admin/upload', async(ctx, next)=>{
     upload.removeTemImage(imgPath)
     
     ctx.body = {
-        imgUrl: `https://static.muxixyz.com/${qiniu_result.key}`
+        imgUrl: `http://static.muxixyz.com/${qiniu_result.key}`
     }
 })
 
