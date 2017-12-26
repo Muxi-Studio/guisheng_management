@@ -19,7 +19,7 @@ router.get('/admin', function(ctx, next){
     let template = swig.compileFile(path.resolve(templateRoot, "home.html"));
     ctx.body = template({})
     if(!ctx.request.query.email&&!ctx.cookies.get("email")){
-        ctx.redirect('https://user.muxixyz.com/?landing=localhost:8080/admin')
+        ctx.redirect('https://user.muxixyz.com/?landing=gs.muxixyz.com/admin/admin')
     }else if(ctx.request.query.email){
         ctx.cookies.set("email", ctx.request.query.email, {
             httpOnly: false,
